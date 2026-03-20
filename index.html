@@ -6,7 +6,7 @@
   <title>Handwriting Personality Test | Mesmos</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400&family=Caveat:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Nunito:wght@400;600;700;800;900&family=Caveat:wght@400;600;700&display=swap" rel="stylesheet">
 
   <style>
     /* ── VARIABLES ── */
@@ -26,14 +26,31 @@
       --r-md:  14px;
       --r-lg:  20px;
       --r-pill:40px;
-      --font:  'Nunito', sans-serif;
+      /* Gotham Rounded is loaded by the Shopify theme; Nunito is the closest free fallback */
+      --font-head: 'Gotham Rounded', 'Nunito', Inter, sans-serif;
+      --font-body: Inter, 'Nunito', sans-serif;
       --hw:    'Caveat', cursive;
     }
 
     /* ── RESET ── */
     *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
     html { scroll-behavior:smooth; }
-    body { font-family:var(--font); background:var(--bg); color:var(--dark); min-height:100vh; -webkit-font-smoothing:antialiased; }
+    body {
+      font-family: var(--font-body);
+      font-size: 15px;
+      line-height: 1.75;
+      background: var(--bg);
+      color: var(--dark);
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    h1, h2, h3, h4, h5 { font-family: var(--font-head); }
+    h1 { font-size: 36px; text-transform: uppercase; letter-spacing: 0.02em; }
+    h2 { font-size: 32px; text-transform: uppercase; letter-spacing: 0.02em; }
+    h3 { font-size: 24px; text-transform: uppercase; letter-spacing: 0.02em; }
+    h4 { font-size: 20px; text-transform: uppercase; letter-spacing: 0.02em; }
+    h5 { font-size: 16px; }
 
     /* ════════════════════════════════════
        POPUP
@@ -59,40 +76,41 @@
     }
 
     .popup-icon { font-size:3.25rem; text-align:center; display:block; margin-bottom:0.875rem; }
-    .popup h2   { font-size:1.4rem; font-weight:900; text-align:center; line-height:1.25; margin-bottom:0.4rem; }
-    .popup-sub  { font-size:0.875rem; color:var(--muted); text-align:center; line-height:1.55; margin-bottom:1.75rem; }
+    .popup h2   {
+      font-family:var(--font-head);
+      font-size:1.35rem; font-weight:900; text-align:center;
+      line-height:1.25; margin-bottom:0.4rem;
+      text-transform:uppercase; letter-spacing:0.03em;
+    }
+    .popup-sub  { font-size:0.875rem; color:var(--muted); text-align:center; line-height:1.6; margin-bottom:1.75rem; }
 
     .field { margin-bottom:1rem; }
     .field label {
       display:block;
-      font-size:0.73rem; font-weight:800;
-      text-transform:uppercase; letter-spacing:0.07em;
+      font-family:var(--font-head);
+      font-size:0.71rem; font-weight:800;
+      text-transform:uppercase; letter-spacing:0.08em;
       margin-bottom:0.35rem;
     }
-    .field input, .field select {
+    .field input {
       width:100%;
       padding:0.75rem 1rem;
       border:1.5px solid var(--border);
       border-radius:var(--r-sm);
-      font-family:var(--font); font-size:0.9375rem;
+      font-family:var(--font-body); font-size:0.9375rem;
       color:var(--dark); background:var(--bg);
       outline:none; transition:border-color 0.2s;
     }
-    .field input:focus, .field select:focus { border-color:var(--accent-deep); }
-    .field select {
-      appearance:none;
-      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='7'%3E%3Cpath d='M0 0l5 6 5-6' fill='none' stroke='%23999' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
-      background-repeat:no-repeat; background-position:right 1rem center;
-      padding-right:2.5rem; cursor:pointer;
-    }
-    .field-hint { font-size:0.75rem; color:var(--muted); margin-top:0.3rem; }
+    .field input:focus { border-color:var(--accent-deep); }
+    .field input::placeholder { color:#bbb; }
+    .field-hint { font-size:0.75rem; color:var(--muted); margin-top:0.35rem; }
 
     .btn-cta {
       display:block; width:100%;
       padding:0.9rem; margin-top:1.25rem;
       background:var(--dark); color:#fff;
-      font-family:var(--font); font-size:0.9375rem; font-weight:700;
-      text-transform:uppercase; letter-spacing:0.05em;
+      font-family:var(--font-head); font-size:0.9rem; font-weight:700;
+      text-transform:uppercase; letter-spacing:0.07em;
       border:none; border-radius:10px; cursor:pointer;
       transition:background 0.2s;
     }
@@ -102,7 +120,7 @@
       display:block; width:100%;
       padding:0.6rem; margin-top:0.35rem;
       background:none; border:none;
-      font-family:var(--font); font-size:0.82rem; color:var(--muted);
+      font-family:var(--font-body); font-size:0.82rem; color:var(--muted);
       text-decoration:underline; text-underline-offset:2px;
       cursor:pointer;
     }
@@ -117,8 +135,9 @@
       border-bottom:1px solid var(--border);
     }
     .logo {
-      font-weight:900; font-size:1.15rem;
-      text-transform:uppercase; letter-spacing:0.16em;
+      font-family:var(--font-head);
+      font-weight:900; font-size:1.1rem;
+      text-transform:uppercase; letter-spacing:0.18em;
       color:var(--dark); text-decoration:none;
     }
 
@@ -135,20 +154,21 @@
     .badge {
       display:inline-block;
       background:var(--accent); color:var(--dark);
-      font-size:0.71rem; font-weight:800;
-      text-transform:uppercase; letter-spacing:0.11em;
+      font-family:var(--font-head);
+      font-size:0.68rem; font-weight:800;
+      text-transform:uppercase; letter-spacing:0.12em;
       padding:0.3rem 0.9rem; border-radius:var(--r-pill);
       margin-bottom:1.25rem;
     }
 
     #intro h1 {
-      font-size:clamp(1.9rem, 5.5vw, 2.9rem);
-      font-weight:900; line-height:1.08;
+      font-size:clamp(1.75rem, 5vw, 36px);
+      font-weight:900; line-height:1.1;
       margin-bottom:1rem;
     }
     #intro .sub {
-      font-size:1rem; color:var(--muted);
-      line-height:1.65; max-width:500px;
+      font-size:15px; color:var(--muted);
+      line-height:1.75; max-width:500px;
       margin:0 auto 2.5rem;
     }
 
@@ -161,25 +181,25 @@
       text-align:left; margin-bottom:2.5rem;
     }
     .prompt-box h3 {
-      font-size:0.71rem; font-weight:800;
+      font-size:0.68rem; font-weight:800;
       text-transform:uppercase; letter-spacing:0.1em;
       color:var(--muted); margin-bottom:0.75rem;
     }
     .prompt-box .sentence {
-      font-family:var(--hw); font-size:1.5rem;
-      line-height:1.45; color:var(--dark);
+      font-family:var(--hw); font-size:1.55rem;
+      line-height:1.5; color:var(--dark);
     }
     .prompt-box .note {
       font-size:0.82rem; color:var(--muted);
-      margin-top:0.75rem; line-height:1.55;
+      margin-top:0.75rem; line-height:1.6;
     }
 
     .btn-start {
       display:inline-block;
       padding:1rem 3rem;
       background:var(--dark); color:#fff;
-      font-family:var(--font); font-size:1rem; font-weight:700;
-      text-transform:uppercase; letter-spacing:0.07em;
+      font-family:var(--font-head); font-size:0.9rem; font-weight:700;
+      text-transform:uppercase; letter-spacing:0.08em;
       border:none; border-radius:10px; cursor:pointer;
       box-shadow:var(--sh-md);
       transition:background 0.2s, box-shadow 0.2s, transform 0.1s;
@@ -195,8 +215,9 @@
     .prog-wrap { margin-bottom:2rem; }
     .prog-meta {
       display:flex; justify-content:space-between;
-      font-size:0.75rem; font-weight:700;
-      text-transform:uppercase; letter-spacing:0.06em;
+      font-family:var(--font-head);
+      font-size:0.71rem; font-weight:700;
+      text-transform:uppercase; letter-spacing:0.07em;
       color:var(--muted); margin-bottom:0.5rem;
     }
     .prog-track { height:3px; background:var(--border); border-radius:99px; overflow:hidden; }
@@ -209,9 +230,19 @@
       box-shadow:var(--sh-sm);
       animation:fadeIn 0.28s ease;
     }
-    .q-num   { font-size:0.71rem; font-weight:800; text-transform:uppercase; letter-spacing:0.12em; color:var(--accent-deep); margin-bottom:0.6rem; }
-    .q-title { font-size:1.25rem; font-weight:900; margin-bottom:0.4rem; line-height:1.3; }
-    .q-hint  { font-size:0.875rem; color:var(--muted); line-height:1.55; margin-bottom:1.5rem; }
+    .q-num   {
+      font-family:var(--font-head);
+      font-size:0.68rem; font-weight:800;
+      text-transform:uppercase; letter-spacing:0.13em;
+      color:var(--accent-deep); margin-bottom:0.6rem;
+    }
+    .q-title {
+      font-family:var(--font-head);
+      font-size:20px; font-weight:900;
+      margin-bottom:0.4rem; line-height:1.3;
+      text-transform:uppercase;
+    }
+    .q-hint  { font-size:15px; color:var(--muted); line-height:1.6; margin-bottom:1.5rem; }
 
     .opts { display:flex; flex-direction:column; gap:0.65rem; }
 
@@ -223,34 +254,38 @@
       transition:border-color 0.18s, background 0.18s;
       user-select:none;
     }
-    .opt:hover          { border-color:var(--dark); }
-    .opt.on             { background:var(--dark); border-color:var(--dark); color:#fff; }
+    .opt:hover { border-color:var(--dark); }
+    .opt.on    { background:var(--dark); border-color:var(--dark); color:#fff; }
 
     .opt-vis {
-      flex-shrink:0; width:88px; min-height:50px;
+      flex-shrink:0; width:92px; min-height:52px;
       display:flex; align-items:center; justify-content:center;
       background:rgba(0,0,0,0.04); border-radius:var(--r-sm);
       overflow:hidden;
     }
-    .opt.on .opt-vis    { background:rgba(255,255,255,0.1); }
+    .opt.on .opt-vis { background:rgba(255,255,255,0.1); }
 
     .opt-info  { flex:1; min-width:0; }
-    .opt-label { font-weight:800; font-size:0.9rem; }
-    .opt-desc  { font-size:0.78rem; opacity:0.65; margin-top:0.15rem; line-height:1.4; }
-    .opt.on .opt-desc   { opacity:0.8; }
+    .opt-label {
+      font-family:var(--font-head);
+      font-weight:800; font-size:0.875rem;
+      text-transform:uppercase; letter-spacing:0.03em;
+    }
+    .opt-desc  { font-size:0.78rem; opacity:0.65; margin-top:0.2rem; line-height:1.4; }
+    .opt.on .opt-desc { opacity:0.8; }
 
     .btn-next {
       display:block; width:100%; margin-top:1.25rem;
       padding:0.9rem;
       background:var(--dark); color:#fff;
-      font-family:var(--font); font-weight:700; font-size:0.9rem;
-      text-transform:uppercase; letter-spacing:0.05em;
+      font-family:var(--font-head); font-weight:700; font-size:0.875rem;
+      text-transform:uppercase; letter-spacing:0.07em;
       border:none; border-radius:10px; cursor:pointer;
       opacity:0.3; pointer-events:none;
       transition:opacity 0.2s, background 0.2s;
     }
-    .btn-next.ready             { opacity:1; pointer-events:all; }
-    .btn-next.ready:hover       { background:var(--mid); }
+    .btn-next.ready           { opacity:1; pointer-events:all; }
+    .btn-next.ready:hover     { background:var(--mid); }
 
     /* ════════════════════════════════════
        RESULTS
@@ -258,8 +293,8 @@
     #results { padding:2.5rem 0 5rem; display:none; animation:fadeIn 0.45s ease; }
 
     .results-hd            { text-align:center; margin-bottom:1.75rem; }
-    .results-hd h2         { font-size:clamp(1.5rem, 4vw, 2.25rem); font-weight:900; margin-bottom:0.35rem; }
-    .results-hd p          { font-size:0.875rem; color:var(--muted); }
+    .results-hd h2         { font-size:clamp(1.4rem, 4vw, 32px); font-weight:900; margin-bottom:0.35rem; }
+    .results-hd p          { font-size:15px; color:var(--muted); }
 
     .p-card {
       background:var(--dark); color:#fff;
@@ -274,27 +309,50 @@
       pointer-events:none;
     }
     .p-emoji  { font-size:4.5rem; display:block; margin-bottom:0.6rem; }
-    .p-tag    { font-size:0.68rem; font-weight:800; text-transform:uppercase; letter-spacing:0.16em; color:var(--accent); margin-bottom:0.35rem; }
-    .p-name   { font-size:clamp(1.8rem, 4.5vw, 2.7rem); font-weight:900; line-height:1.05; margin-bottom:1rem; }
-    .p-desc   { font-size:0.9375rem; line-height:1.75; opacity:0.83; max-width:500px; margin:0 auto 1.5rem; }
+    .p-tag    {
+      font-family:var(--font-head);
+      font-size:0.65rem; font-weight:800;
+      text-transform:uppercase; letter-spacing:0.18em;
+      color:var(--accent); margin-bottom:0.35rem;
+    }
+    .p-name   {
+      font-family:var(--font-head);
+      font-size:clamp(1.7rem, 4vw, 2.6rem);
+      font-weight:900; line-height:1.05;
+      text-transform:uppercase;
+      margin-bottom:1rem;
+    }
+    .p-desc   { font-size:15px; line-height:1.75; opacity:0.83; max-width:500px; margin:0 auto 1.5rem; }
     .p-traits { display:flex; flex-wrap:wrap; gap:0.45rem; justify-content:center; }
-    .p-trait  { padding:0.3rem 0.9rem; background:rgba(255,255,255,0.11); border-radius:var(--r-pill); font-size:0.78rem; font-weight:700; }
+    .p-trait  {
+      padding:0.3rem 0.9rem;
+      background:rgba(255,255,255,0.11);
+      border-radius:var(--r-pill);
+      font-family:var(--font-head);
+      font-size:0.72rem; font-weight:700;
+      text-transform:uppercase; letter-spacing:0.05em;
+    }
 
     .i-grid   { display:grid; grid-template-columns:1fr 1fr; gap:0.875rem; margin-bottom:1.1rem; }
     .insight  { background:var(--surface); border-radius:var(--r-md); padding:1.25rem; box-shadow:var(--sh-sm); }
-    .insight h4 { font-size:0.68rem; font-weight:800; text-transform:uppercase; letter-spacing:0.09em; color:var(--muted); margin-bottom:0.4rem; }
-    .insight p  { font-size:0.875rem; font-weight:700; line-height:1.5; }
+    .insight h4 {
+      font-family:var(--font-head);
+      font-size:0.65rem; font-weight:800;
+      text-transform:uppercase; letter-spacing:0.1em;
+      color:var(--muted); margin-bottom:0.4rem;
+    }
+    .insight p  { font-size:15px; font-weight:600; line-height:1.5; }
 
-    .cta-box  { background:var(--surface); border:1.5px solid var(--border); border-radius:var(--r-lg); padding:2rem; text-align:center; }
-    .cta-box h3 { font-size:1.1rem; font-weight:900; margin-bottom:0.4rem; }
-    .cta-box p  { font-size:0.875rem; color:var(--muted); margin-bottom:1.25rem; }
+    .cta-box  { background:var(--surface); border:1.5px solid var(--border); border-radius:var(--r-lg); padding:2rem; text-align:center; margin-bottom:1.5rem; }
+    .cta-box h3 { font-size:24px; font-weight:900; margin-bottom:0.4rem; }
+    .cta-box p  { font-size:15px; color:var(--muted); margin-bottom:1.25rem; }
     .cta-btns   { display:flex; gap:0.75rem; justify-content:center; flex-wrap:wrap; }
 
     .btn-outline {
       padding:0.8rem 1.75rem;
       background:none; border:1.5px solid var(--dark); border-radius:10px;
-      font-family:var(--font); font-weight:700; font-size:0.85rem;
-      text-transform:uppercase; letter-spacing:0.04em;
+      font-family:var(--font-head); font-weight:700; font-size:0.8rem;
+      text-transform:uppercase; letter-spacing:0.06em;
       color:var(--dark); cursor:pointer; transition:0.2s;
     }
     .btn-outline:hover { background:var(--dark); color:#fff; }
@@ -303,18 +361,26 @@
       padding:0.8rem 1.75rem;
       background:var(--dark); color:#fff;
       border:none; border-radius:10px;
-      font-family:var(--font); font-weight:700; font-size:0.85rem;
-      text-transform:uppercase; letter-spacing:0.04em;
+      font-family:var(--font-head); font-weight:700; font-size:0.8rem;
+      text-transform:uppercase; letter-spacing:0.06em;
       text-decoration:none; display:inline-block;
       cursor:pointer; transition:background 0.2s;
     }
     .btn-shop:hover { background:var(--mid); }
 
+    .disclaimer {
+      text-align:center;
+      font-size:0.75rem;
+      color:var(--muted);
+      line-height:1.6;
+      padding:0 1rem 1rem;
+    }
+
     /* ── HANDWRITING FONT SHORTHAND ── */
     .hw { font-family:var(--hw); }
 
     /* ── ANIMATIONS ── */
-    @keyframes fadeIn  { from{opacity:0}               to{opacity:1} }
+    @keyframes fadeIn  { from{opacity:0} to{opacity:1} }
     @keyframes slideUp { from{transform:translateY(22px);opacity:0} to{transform:translateY(0);opacity:1} }
 
     /* ── RESPONSIVE ── */
@@ -323,22 +389,22 @@
       .cta-btns     { flex-direction:column; }
       .btn-outline, .btn-shop { width:100%; text-align:center; }
       .popup        { padding:2rem 1.25rem 1.5rem; }
-      #intro h1     { font-size:1.85rem; }
+      #intro h1     { font-size:1.75rem; }
     }
   </style>
 </head>
 <body>
 
 <!-- ════════════════════════════════════
-     POPUP MODAL
+     POPUP 1 — CLAIM REFILL
 ════════════════════════════════════ -->
-<div class="overlay" id="overlay">
+<div class="overlay" id="overlay1">
   <div class="popup">
     <span class="popup-icon">🎁</span>
-    <h2>Claim Your Free 6-Pack<br>Pen Refill!</h2>
+    <h2>Claim Your Free<br>6-Pack Pen Refill!</h2>
     <p class="popup-sub">
-      Fill in your details below to claim a complimentary refill pack for your Mesmos pen —
-      then take the quiz to discover what your handwriting says about you!
+      Fill in your details below and we'll send you an email with the next steps —
+      so we can get your complimentary refills on their way to you!
     </p>
 
     <form id="claimForm" onsubmit="submitClaim(event)">
@@ -350,38 +416,38 @@
       <div class="field">
         <label for="fdob">Date of Birth</label>
         <input type="date" id="fdob" required>
-        <p class="field-hint">We use this so we can celebrate you on your birthday! 🎂</p>
+        <p class="field-hint">So we can celebrate you on your birthday! 🎂</p>
       </div>
 
       <div class="field">
-        <label for="fpen">Which Pen Set Did You Buy?</label>
-        <select id="fpen" required>
-          <option value="" disabled selected>Select your pen set</option>
-          <optgroup label="✦ Pastel Series">
-            <option>Pastel — Appreciate Pen Set</option>
-            <option>Pastel — Inspire Pen Set</option>
-            <option>Pastel — Chaos Coordinator Pen Set</option>
-          </optgroup>
-          <optgroup label="✦ Classic Series">
-            <option>Classic — Van Gogh Pen Set</option>
-          </optgroup>
-          <optgroup label="✦ Midnight Series">
-            <option>Midnight — Boss Pen Set</option>
-            <option>Midnight — Inspire Pen Set</option>
-          </optgroup>
-          <optgroup label="✦ Ombre Series">
-            <option>Ombre — Courageous Pen Set</option>
-            <option>Ombre — Affirmation Pen Set</option>
-          </optgroup>
-          <option value="other">Other / Not Listed</option>
-        </select>
-        <p class="field-hint">Not sure? Check the barcode label on the back of your pen box. 📦</p>
+        <label for="fpen">Which Pen Set Do You Have?</label>
+        <input type="text" id="fpen"
+               placeholder="Enter the name printed below the barcode on the back of your box"
+               required autocomplete="off">
+        <p class="field-hint">Flip your pen box over — the product name is printed just below the barcode label. 📦</p>
       </div>
 
       <button type="submit" class="btn-cta">Claim My Refill &amp; Start the Quiz →</button>
     </form>
 
     <button class="btn-skip" onclick="skipClaim()">Skip for now — I just want the quiz</button>
+  </div>
+</div>
+
+
+<!-- ════════════════════════════════════
+     POPUP 2 — CHECK EMAIL
+════════════════════════════════════ -->
+<div class="overlay gone" id="overlay2">
+  <div class="popup">
+    <span class="popup-icon">📬</span>
+    <h2>Check Your Inbox!</h2>
+    <p class="popup-sub">
+      You're all set! We've sent you an email — just reply with your shipping details
+      and we'll get your free refills on their way to you. Now, let's find out what your
+      handwriting says about you!
+    </p>
+    <button class="btn-cta" onclick="closeEmail()">Let's Go — Start the Quiz →</button>
   </div>
 </div>
 
@@ -410,11 +476,11 @@
       </p>
 
       <div class="prompt-box">
-        <h3>Step 1 — Grab Your Pen &amp; Write This</h3>
-        <p class="sentence">"The quick brown fox jumps over the lazy dog."</p>
+        <h3>Step 1 — Grab Your Pen &amp; Write This Affirmation</h3>
+        <p class="sentence">"I am strong, I am worthy, and every day I am becoming the best version of myself."</p>
         <p class="note">
-          Write this sentence naturally on a piece of paper — don't try to change or tidy up your handwriting.
-          Once you're done, come back and answer the 10 questions based on exactly what you see.
+          Write this in your most natural handwriting — don't slow down or tidy it up.
+          Once you're done, come back and answer the 10 questions based on exactly what you see on the page.
         </p>
       </div>
 
@@ -456,6 +522,10 @@
           <a href="https://mesmos.co/collections/pen-sets" class="btn-shop">Shop Pen Sets</a>
         </div>
       </div>
+      <p class="disclaimer">
+        This quiz is based on graphology principles and is designed for fun and self-reflection.
+        Results are not scientifically validated and should not be taken as a clinical assessment.
+      </p>
     </section>
 
   </div>
@@ -467,67 +537,134 @@
 ════════════════════════════════════ -->
 <script>
 /* ──────────────────────────────────────
+   HELPERS — reusable visuals
+────────────────────────────────────── */
+
+/* Lined-paper box wrapping any inner HTML */
+function linedBox(inner) {
+  return `<div style="position:relative;width:88px;height:50px;background:#fff;background-image:repeating-linear-gradient(transparent,transparent 15px,#e4dbd3 15px,#e4dbd3 16.5px);border-radius:6px;display:flex;align-items:center;justify-content:center;overflow:hidden">${inner}</div>`;
+}
+
+/* Q6 — word "letter" in Caveat with a red crossbar at a given top% */
+function tbarVis(topPct) {
+  return `<div style="position:relative;width:88px;height:50px;background:#fff;background-image:repeating-linear-gradient(transparent,transparent 15px,#e4dbd3 15px,#e4dbd3 16.5px);border-radius:6px;display:flex;align-items:center;justify-content:center;overflow:hidden">
+    <span style="font-family:'Caveat',cursive;font-size:1.45rem;color:#1F1F1F;position:relative;z-index:1;white-space:nowrap">letter</span>
+    <div style="position:absolute;z-index:2;left:27%;right:34%;height:2.5px;background:#E53935;border-radius:2px;top:${topPct}%"></div>
+  </div>`;
+}
+
+/* Q7 — SVG letter 'l' with different loop shapes */
+const loopWide = `<svg viewBox="0 0 48 68" width="36" height="54" xmlns="http://www.w3.org/2000/svg">
+  <path d="M24 62 C23 50 13 42 13 28 C13 14 20 7 27 7 C34 7 37 13 35 22 C33 30 26 34 23 40 C21 46 22 54 24 62"
+    fill="none" stroke="#1F1F1F" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>`;
+
+const loopNarrow = `<svg viewBox="0 0 48 68" width="36" height="54" xmlns="http://www.w3.org/2000/svg">
+  <path d="M24 62 C23 52 20 44 20 32 C20 18 22 8 26 8 C29 8 30 14 29 26 C28 36 25 44 24 54 C24 58 24 62 24 62"
+    fill="none" stroke="#1F1F1F" stroke-width="2.4" stroke-linecap="round"/>
+</svg>`;
+
+const loopNone = `<svg viewBox="0 0 48 68" width="36" height="54" xmlns="http://www.w3.org/2000/svg">
+  <line x1="24" y1="6" x2="24" y2="62" stroke="#1F1F1F" stroke-width="2.4" stroke-linecap="round"/>
+  <path d="M18 62 Q24 66 30 62" fill="none" stroke="#1F1F1F" stroke-width="1.8" stroke-linecap="round"/>
+</svg>`;
+
+/* Q8 — SVG letter 'm' with rounded / pointed / connected style */
+const shapeRound = `<svg viewBox="0 0 62 46" width="62" height="46" xmlns="http://www.w3.org/2000/svg">
+  <path d="M6 40 L6 22 Q6 8 15 8 Q24 8 24 22 Q24 8 33 8 Q42 8 42 22 L42 40"
+    fill="none" stroke="#1F1F1F" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>`;
+
+const shapePoint = `<svg viewBox="0 0 62 46" width="62" height="46" xmlns="http://www.w3.org/2000/svg">
+  <path d="M6 40 L6 24 L15 5 L24 24 L33 5 L42 24 L42 40"
+    fill="none" stroke="#1F1F1F" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>`;
+
+const shapeConnect = `<svg viewBox="0 0 72 46" width="72" height="46" xmlns="http://www.w3.org/2000/svg">
+  <!-- entry stroke -->
+  <path d="M2 30 Q4 24 6 22" fill="none" stroke="#1F1F1F" stroke-width="2.2" stroke-linecap="round"/>
+  <!-- 'm' -->
+  <path d="M6 40 L6 22 Q6 8 15 8 Q24 8 24 22 Q24 8 33 8 Q42 8 42 22 L42 38"
+    fill="none" stroke="#1F1F1F" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- exit / connecting stroke to next letter -->
+  <path d="M42 38 Q46 44 50 36 L54 22 Q54 10 60 10 Q66 10 66 22 L66 40"
+    fill="none" stroke="#1F1F1F" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>`;
+
+/* Q9 — SVG open vs closed 'o' */
+const oOpen = `<svg viewBox="0 0 52 52" width="46" height="46" xmlns="http://www.w3.org/2000/svg">
+  <!-- Arc leaving a clear gap at the top -->
+  <path d="M37 14 A17 17 0 1 0 15 14"
+    fill="none" stroke="#1F1F1F" stroke-width="2.6" stroke-linecap="round"/>
+  <!-- Small red arrows showing the gap -->
+  <path d="M15 10 L15 14" stroke="#E53935" stroke-width="2" stroke-linecap="round"/>
+  <path d="M37 10 L37 14" stroke="#E53935" stroke-width="2" stroke-linecap="round"/>
+</svg>`;
+
+const oClosed = `<svg viewBox="0 0 52 52" width="46" height="46" xmlns="http://www.w3.org/2000/svg">
+  <ellipse cx="26" cy="26" rx="17" ry="18" fill="none" stroke="#1F1F1F" stroke-width="2.6"/>
+</svg>`;
+
+/* ──────────────────────────────────────
    STATE
 ────────────────────────────────────── */
-let userName  = '';
-let qIndex    = 0;
-let picked    = [];
-let score     = { social:0, emotion:0, drive:0, outlook:0, order:0 };
+let userName = '';
+let qIndex   = 0;
+let picked   = [];
+let score    = { social:0, emotion:0, drive:0, outlook:0, order:0 };
 
 /* ──────────────────────────────────────
    QUIZ DATA
-   Score keys: social, emotion, drive, outlook, order
-   Positive = extrovert / open / ambitious / optimistic / structured
-   Negative = introvert / reserved / relaxed / pragmatic / free-spirited
 ────────────────────────────────────── */
 const questions = [
-  /* Q1 — Letter Size */
+
+  /* Q1 — Letter Size (lined paper background) */
   {
     title: "How large are your letters?",
-    hint:  "Compare the height of your letters to the natural line height on the page.",
+    hint:  "Compare the height of your letters to the ruled lines on the page.",
     opts: [
       {
         label: "Large",
-        desc:  "Letters are tall — they reach or extend past the top of the line",
-        vis:   `<span class="hw" style="font-size:2rem;font-weight:700;line-height:1">Aa</span>`,
+        desc:  "Letters are tall — they reach or overflow the top of the line",
+        vis:   linedBox(`<span style="font-family:'Caveat',cursive;font-size:2.4rem;font-weight:700;line-height:1;color:#1F1F1F">Aa</span>`),
         score: { social:2, drive:1 }
       },
       {
         label: "Average",
-        desc:  "Letters sit at a natural, balanced height — not too big or small",
-        vis:   `<span class="hw" style="font-size:1.25rem;font-weight:600">Aa</span>`,
+        desc:  "Letters sit at a natural, balanced height within the lines",
+        vis:   linedBox(`<span style="font-family:'Caveat',cursive;font-size:1.4rem;font-weight:600;line-height:1;color:#1F1F1F">Aa</span>`),
         score: {}
       },
       {
         label: "Small or Tiny",
-        desc:  "Letters are noticeably compact — they sit low and are quite small",
-        vis:   `<span class="hw" style="font-size:0.78rem;font-weight:600">Aa</span>`,
+        desc:  "Letters are noticeably compact — they barely fill the line",
+        vis:   linedBox(`<span style="font-family:'Caveat',cursive;font-size:0.8rem;font-weight:600;line-height:1;color:#1F1F1F">Aa</span>`),
         score: { social:-2, order:1 }
       }
     ]
   },
 
-  /* Q2 — Slant */
+  /* Q2 — Slant (stronger angles) */
   {
     title: "Which way do your letters slant?",
-    hint:  "Imagine a vertical line through your letters — do they lean forward, backward, or stand straight?",
+    hint:  "Imagine a vertical line through your letters — do they lean forward, backward, or stand perfectly straight?",
     opts: [
       {
         label: "Forward — leans right",
         desc:  "Letters angle noticeably to the right",
-        vis:   `<span class="hw" style="font-size:1.4rem;display:inline-block;transform:skewX(-15deg)">Hello</span>`,
+        vis:   `<span style="font-family:'Caveat',cursive;font-size:1.5rem;display:inline-block;transform:skewX(-22deg);color:#1F1F1F">Hello</span>`,
         score: { social:1, emotion:2 }
       },
       {
         label: "Upright — perfectly vertical",
-        desc:  "Letters stand straight up with no lean at all",
-        vis:   `<span class="hw" style="font-size:1.4rem">Hello</span>`,
+        desc:  "Letters stand straight up — no lean in either direction",
+        vis:   `<span style="font-family:'Caveat',cursive;font-size:1.5rem;font-style:normal;display:inline-block;transform:none;color:#1F1F1F;letter-spacing:0.05em">Hello</span>`,
         score: { emotion:-1, order:1 }
       },
       {
         label: "Backward — leans left",
-        desc:  "Letters angle to the left",
-        vis:   `<span class="hw" style="font-size:1.4rem;display:inline-block;transform:skewX(15deg)">Hello</span>`,
+        desc:  "Letters angle clearly to the left",
+        vis:   `<span style="font-family:'Caveat',cursive;font-size:1.5rem;display:inline-block;transform:skewX(25deg);color:#1F1F1F">Hello</span>`,
         score: { social:-1, emotion:-2 }
       }
     ]
@@ -539,21 +676,21 @@ const questions = [
     hint:  "Flip your paper over — how deep are the grooves from your writing?",
     opts: [
       {
-        label: "Heavy — strong, deep grooves",
-        desc:  "You press firmly — the impression is clearly visible on the other side",
-        vis:   `<span class="hw" style="font-size:1.5rem;font-weight:700;color:#111;text-shadow:0 1px 0 #555">Aa</span>`,
+        label: "Heavy — deep grooves",
+        desc:  "You press firmly — a clear impression is visible on the other side",
+        vis:   `<span style="font-family:'Caveat',cursive;font-size:1.6rem;font-weight:700;color:#111;text-shadow:0 1px 1px #444">Aa</span>`,
         score: { drive:2, emotion:1 }
       },
       {
         label: "Medium — moderate impression",
         desc:  "Consistent, balanced pressure throughout",
-        vis:   `<span class="hw" style="font-size:1.5rem;font-weight:500;color:#444">Aa</span>`,
+        vis:   `<span style="font-family:'Caveat',cursive;font-size:1.6rem;font-weight:500;color:#555">Aa</span>`,
         score: {}
       },
       {
         label: "Light — barely any impression",
-        desc:  "Very faint marks — almost no groove felt on the other side",
-        vis:   `<span class="hw" style="font-size:1.5rem;font-weight:400;color:#bbb">Aa</span>`,
+        desc:  "Very faint marks — almost no groove on the other side",
+        vis:   `<span style="font-family:'Caveat',cursive;font-size:1.6rem;font-weight:400;color:#c0b8b0">Aa</span>`,
         score: { emotion:2, drive:-1 }
       }
     ]
@@ -562,24 +699,24 @@ const questions = [
   /* Q4 — Word Spacing */
   {
     title: "How much space is between your words?",
-    hint:  "Look at the gaps between each word in your sentence.",
+    hint:  "Look at the gaps between each word in your affirmation.",
     opts: [
       {
         label: "Wide gaps",
         desc:  "Large, generous spaces between each word",
-        vis:   `<span class="hw" style="font-size:0.95rem;word-spacing:1.1rem;white-space:nowrap">fox  dog</span>`,
+        vis:   `<span style="font-family:'Caveat',cursive;font-size:0.9rem;word-spacing:1.1rem;white-space:nowrap;color:#1F1F1F">I   am</span>`,
         score: { social:-1, drive:1 }
       },
       {
         label: "Normal spacing",
         desc:  "Natural, even gaps — nothing unusual",
-        vis:   `<span class="hw" style="font-size:0.95rem">fox dog</span>`,
+        vis:   `<span style="font-family:'Caveat',cursive;font-size:0.9rem;color:#1F1F1F">I am</span>`,
         score: {}
       },
       {
         label: "Narrow / cramped",
-        desc:  "Words are squeezed close together with little space between them",
-        vis:   `<span class="hw" style="font-size:0.95rem;word-spacing:-0.2rem">fox dog</span>`,
+        desc:  "Words are squeezed close together with little space",
+        vis:   `<span style="font-family:'Caveat',cursive;font-size:0.9rem;word-spacing:-0.2rem;color:#1F1F1F">Iam</span>`,
         score: { social:2 }
       }
     ]
@@ -593,129 +730,129 @@ const questions = [
       {
         label: "High — floats well above",
         desc:  "The dot sits far above the letter stem",
-        vis:   `<span class="hw" style="font-size:1.7rem;line-height:1.1;display:flex;align-items:flex-end;justify-content:center;gap:0"><span style="position:relative">ı<span style="position:absolute;top:-12px;left:50%;transform:translateX(-50%);font-size:1rem">·</span></span></span>`,
+        vis:   `<span style="font-family:'Caveat',cursive;font-size:1.8rem;line-height:1;display:inline-flex;align-items:flex-end;justify-content:center"><span style="position:relative">ı<span style="position:absolute;top:-14px;left:50%;transform:translateX(-50%);font-size:1rem">·</span></span></span>`,
         score: { outlook:2 }
       },
       {
         label: "Precisely placed — right above",
         desc:  "A neat, accurate dot exactly above the stem",
-        vis:   `<span class="hw" style="font-size:1.7rem">i</span>`,
+        vis:   `<span style="font-family:'Caveat',cursive;font-size:1.8rem">i</span>`,
         score: { order:2 }
       },
       {
         label: "Circle or bubble",
         desc:  "A small open circle instead of a dot",
-        vis:   `<span class="hw" style="font-size:1.7rem;line-height:1.1;display:flex;align-items:flex-end;justify-content:center"><span style="position:relative">ı<span style="position:absolute;top:-12px;left:50%;transform:translateX(-50%);font-size:0.7rem">○</span></span></span>`,
+        vis:   `<span style="font-family:'Caveat',cursive;font-size:1.8rem;line-height:1;display:inline-flex;align-items:flex-end;justify-content:center"><span style="position:relative">ı<span style="position:absolute;top:-13px;left:50%;transform:translateX(-50%);font-size:0.7rem">○</span></span></span>`,
         score: { outlook:1, emotion:1, social:1 }
       },
       {
         label: "Slashed or dashed",
         desc:  "A short line or slash rather than a dot",
-        vis:   `<span class="hw" style="font-size:1.7rem;line-height:1.1;display:flex;align-items:flex-end;justify-content:center"><span style="position:relative">ı<span style="position:absolute;top:-10px;left:50%;transform:translateX(-50%);font-size:0.85rem">–</span></span></span>`,
+        vis:   `<span style="font-family:'Caveat',cursive;font-size:1.8rem;line-height:1;display:inline-flex;align-items:flex-end;justify-content:center"><span style="position:relative">ı<span style="position:absolute;top:-11px;left:50%;transform:translateX(-50%);font-size:0.9rem">–</span></span></span>`,
         score: { drive:1, emotion:-1 }
       },
       {
         label: "Left of the stem",
         desc:  "Dot drifts to the left, not sitting above the letter",
-        vis:   `<span class="hw" style="font-size:1.7rem;line-height:1.1;display:flex;align-items:flex-end;justify-content:center"><span style="position:relative"><span style="position:absolute;top:-10px;left:-8px;font-size:1rem">·</span>ı</span></span>`,
+        vis:   `<span style="font-family:'Caveat',cursive;font-size:1.8rem;line-height:1;display:inline-flex;align-items:flex-end;justify-content:center"><span style="position:relative"><span style="position:absolute;top:-11px;left:-10px;font-size:1rem">·</span>ı</span></span>`,
         score: { drive:-1, order:-1 }
       }
     ]
   },
 
-  /* Q6 — T-bar */
+  /* Q6 — T-bar (word "letter" with red crossbar) */
   {
     title: "How do you cross your lowercase 't'?",
-    hint:  "Look at the horizontal bar through your t's — how long is it and where does it sit on the stem?",
+    hint:  "Look at the horizontal bar through your t's — where does it sit on the stem?",
     opts: [
       {
-        label: "High &amp; long — sweeping bar",
-        desc:  "The bar sits near the top of the stem and extends wide on both sides",
-        vis:   `<span class="hw" style="font-size:1.7rem;font-weight:600">t̄</span>`,
+        label: "High &amp; long — near the top",
+        desc:  "The bar sweeps wide and sits close to the top of the stem",
+        vis:   tbarVis(22),
         score: { drive:2, outlook:1 }
       },
       {
         label: "Middle — neat and centred",
-        desc:  "A tidy crossing right in the middle of the stem",
-        vis:   `<span class="hw" style="font-size:1.7rem">t</span>`,
+        desc:  "The bar crosses right in the middle of the stem",
+        vis:   tbarVis(44),
         score: { order:1 }
       },
       {
-        label: "Short &amp; low — small crossing",
-        desc:  "A brief, minimal bar low on the stem",
-        vis:   `<span class="hw" style="font-size:1.7rem;letter-spacing:-0.05em;opacity:0.65">t</span>`,
+        label: "Short &amp; low — near the bottom",
+        desc:  "A small, minimal bar sitting low on the stem",
+        vis:   tbarVis(64),
         score: { drive:-2 }
       }
     ]
   },
 
-  /* Q7 — Loops */
+  /* Q7 — Loops (letter 'l' SVG) */
   {
-    title: "What do your looped letters look like?",
-    hint:  "Look at letters like 'l', 'b', and 'e' — how are the loops shaped?",
+    title: "What does the loop of your letter 'l' look like?",
+    hint:  "Look at your letter 'l' in the affirmation — how is the loop at the top shaped?",
     opts: [
       {
-        label: "Wide, open &amp; flowing",
-        desc:  "Loops are generous, round, and relaxed",
-        vis:   `<span class="hw" style="font-size:1.8rem;font-weight:400">le</span>`,
+        label: "Wide &amp; open",
+        desc:  "A large, generous, rounded loop at the top",
+        vis:   loopWide,
         score: { emotion:1, social:1 }
       },
       {
         label: "Narrow &amp; tight",
-        desc:  "Loops are compressed and close together",
-        vis:   `<span class="hw" style="font-size:1.8rem;font-weight:700;letter-spacing:-0.06em">le</span>`,
+        desc:  "A small, compressed loop — barely any space inside",
+        vis:   loopNarrow,
         score: { drive:1, emotion:-1 }
       },
       {
-        label: "Barely there — angular",
-        desc:  "Minimal loops — more like straight strokes or retraced lines",
-        vis:   `<span class="hw" style="font-size:1.8rem;font-weight:900">le</span>`,
+        label: "No loop — straight line",
+        desc:  "No loop at all — just a clean straight stroke downward",
+        vis:   loopNone,
         score: { order:1, emotion:-1 }
       }
     ]
   },
 
-  /* Q8 — Letter Shapes */
+  /* Q8 — Letter Shapes (SVG 'm') */
   {
     title: "What shape do your letters tend to be?",
-    hint:  "Step back and look at the overall shape of your letters — curved, pointed, or connected?",
+    hint:  "Look at letters like 'm' and 'n' — are the tops curved, sharp, or do the letters flow together?",
     opts: [
       {
         label: "Rounded &amp; soft",
-        desc:  "Letters have gentle, curved, friendly edges",
-        vis:   `<span class="hw" style="font-size:1.05rem;font-weight:400;letter-spacing:0.03em">The fox</span>`,
+        desc:  "The arches of your letters curve gently at the top",
+        vis:   shapeRound,
         score: { emotion:1, outlook:1 }
       },
       {
         label: "Pointed &amp; angular",
-        desc:  "Letters have sharp peaks and angular edges",
-        vis:   `<span class="hw" style="font-size:1.05rem;font-weight:800;letter-spacing:-0.02em">The fox</span>`,
+        desc:  "The tops of your letters come to a sharp, angular peak",
+        vis:   shapePoint,
         score: { drive:1, emotion:-1 }
       },
       {
-        label: "Connected — letters link up",
-        desc:  "Letters flow into each other with no pen lifts between them",
-        vis:   `<span class="hw" style="font-size:1.05rem;font-style:italic;font-weight:600;letter-spacing:0.01em">The fox</span>`,
+        label: "Connected — letters flow together",
+        desc:  "Letters are joined with no pen lifts — one continuous stroke",
+        vis:   shapeConnect,
         score: { order:1, drive:1 }
       }
     ]
   },
 
-  /* Q9 — Letter 'o' */
+  /* Q9 — Letter 'o' (SVG open vs closed) */
   {
     title: "How is your letter 'o' formed?",
-    hint:  "Look closely at the o's in your sentence — is the top of the circle open or completely closed?",
+    hint:  "Look closely at the o's in your affirmation — is the top open or completely sealed?",
     opts: [
       {
         label: "Open at the top",
-        desc:  "There's a small gap or opening where the loop begins and ends",
-        vis:   `<span class="hw" style="font-size:2.4rem;font-weight:300;letter-spacing:-0.05em">o</span>`,
+        desc:  "There's a visible gap where the circle begins and ends",
+        vis:   oOpen,
         score: { social:2, emotion:1 }
       },
       {
         label: "Completely sealed",
-        desc:  "The 'o' is a tight, perfectly closed circle",
-        vis:   `<span class="hw" style="font-size:2.4rem;font-weight:800">o</span>`,
+        desc:  "The 'o' is a tight, perfectly closed circle — no gap at all",
+        vis:   oClosed,
         score: { social:-2, emotion:-1 }
       }
     ]
@@ -724,30 +861,30 @@ const questions = [
   /* Q10 — Signature */
   {
     title: "How does your signature look?",
-    hint:  "Sign your name naturally below the sentence — what does it look like?",
+    hint:  "Sign your name naturally below the affirmation — what does it look like?",
     opts: [
       {
         label: "Large &amp; legible",
         desc:  "Clear, bold, and easy to read — your name is obvious",
-        vis:   `<span class="hw" style="font-size:1.3rem;font-weight:700">Sarah J.</span>`,
+        vis:   `<span style="font-family:'Caveat',cursive;font-size:1.35rem;font-weight:700;color:#1F1F1F">Sarah J.</span>`,
         score: { social:2, drive:1 }
       },
       {
         label: "Small &amp; modest",
-        desc:  "Smaller than your handwriting — understated and humble",
-        vis:   `<span class="hw" style="font-size:0.85rem;font-weight:600">sarah j.</span>`,
+        desc:  "Smaller than your writing — understated and humble",
+        vis:   `<span style="font-family:'Caveat',cursive;font-size:0.85rem;font-weight:600;color:#1F1F1F">sarah j.</span>`,
         score: { social:-1, emotion:-1 }
       },
       {
         label: "Illegible scrawl",
-        desc:  "Fast, stylised swirls — hard for others to read",
-        vis:   `<span class="hw" style="font-size:1.2rem;font-style:italic;opacity:0.7">S&#126;j~~</span>`,
+        desc:  "Fast, stylised swirls — difficult for others to read",
+        vis:   `<span style="font-family:'Caveat',cursive;font-size:1.2rem;font-style:italic;color:#555">S&#126;j~~</span>`,
         score: { social:-1, emotion:1 }
       },
       {
         label: "Underlined or decorated",
-        desc:  "Has a flourish, underline, or added embellishment beneath",
-        vis:   `<span class="hw" style="font-size:1.2rem;text-decoration:underline;text-underline-offset:4px">Sarah J.</span>`,
+        desc:  "Has a flourish, underline, or embellishment beneath it",
+        vis:   `<span style="font-family:'Caveat',cursive;font-size:1.2rem;text-decoration:underline;text-underline-offset:4px;color:#1F1F1F">Sarah J.</span>`,
         score: { drive:2, order:1 }
       }
     ]
@@ -846,11 +983,18 @@ const personas = {
 function submitClaim(e) {
   e.preventDefault();
   const raw = document.getElementById('fname').value.trim();
-  userName  = raw.split(' ')[0]; // first name only
-  closeOverlay();
+  userName = raw.split(' ')[0];
+  document.getElementById('overlay1').classList.add('gone');
+  document.getElementById('overlay2').classList.remove('gone');
 }
-function skipClaim()    { closeOverlay(); }
-function closeOverlay() { document.getElementById('overlay').classList.add('gone'); }
+
+function skipClaim() {
+  document.getElementById('overlay1').classList.add('gone');
+}
+
+function closeEmail() {
+  document.getElementById('overlay2').classList.add('gone');
+}
 
 /* ──────────────────────────────────────
    QUIZ LOGIC
@@ -865,9 +1009,9 @@ function render() {
   const q   = questions[qIndex];
   const pct = Math.round(((qIndex + 1) / questions.length) * 100);
 
-  document.getElementById('qLabel').textContent    = `Question ${qIndex + 1} of ${questions.length}`;
-  document.getElementById('qPct').textContent      = pct + '%';
-  document.getElementById('progFill').style.width  = pct + '%';
+  document.getElementById('qLabel').textContent   = `Question ${qIndex + 1} of ${questions.length}`;
+  document.getElementById('qPct').textContent     = pct + '%';
+  document.getElementById('progFill').style.width = pct + '%';
 
   const optsHTML = q.opts.map((o, i) => `
     <div class="opt" id="opt${i}" onclick="pick(${i})">
@@ -902,13 +1046,10 @@ function pick(i) {
 
 function next() {
   if (picked[qIndex] === undefined) return;
-
-  // Apply scores from selected option
   const opt = questions[qIndex].opts[picked[qIndex]];
   for (const [k, v] of Object.entries(opt.score || {})) {
     score[k] = (score[k] || 0) + v;
   }
-
   qIndex++;
   if (qIndex >= questions.length) showResults();
   else render();
@@ -919,27 +1060,21 @@ function next() {
 ────────────────────────────────────── */
 function classify() {
   const { social, emotion, drive, outlook, order } = score;
-
-  // Extroverted branch
   if (social >= 3) {
     if (drive   >= 2) return 'visionary';
     if (emotion >= 2) return 'connector';
     return 'freeSpirit';
   }
-
-  // Introverted branch
   if (social <= -2) {
-    if (drive >= 2)  return 'perfectionist';
-    if (order >= 2)  return 'strategist';
+    if (drive >= 2) return 'perfectionist';
+    if (order >= 2) return 'strategist';
     return 'observer';
   }
-
-  // Balanced / ambivert branch
   if ((outlook >= 2) || (emotion >= 1 && outlook >= 1)) return 'creativeSoul';
   if ((drive   >= 2) || (order   >= 2))                 return 'achiever';
   if (emotion  >= 1)                                    return 'connector';
   if (drive    >= 1)                                    return 'achiever';
-  return 'observer'; // thoughtful default
+  return 'observer';
 }
 
 function showResults() {
