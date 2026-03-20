@@ -1,0 +1,984 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Handwriting Personality Test | Mesmos</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400&family=Caveat:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* ── VARIABLES ── */
+    :root {
+      --bg:          #FAF8F5;
+      --surface:     #FFFFFF;
+      --dark:        #1F1F1F;
+      --mid:         #333333;
+      --muted:       #888888;
+      --accent:      #DDB8B0;
+      --accent-deep: #C09088;
+      --border:      rgba(0,0,0,0.08);
+      --sh-sm:       0 1px 4px rgba(0,0,0,0.07);
+      --sh-md:       0 4px 20px rgba(0,0,0,0.09);
+      --sh-lg:       0 14px 44px rgba(0,0,0,0.14);
+      --r-sm:  8px;
+      --r-md:  14px;
+      --r-lg:  20px;
+      --r-pill:40px;
+      --font:  'Nunito', sans-serif;
+      --hw:    'Caveat', cursive;
+    }
+
+    /* ── RESET ── */
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body { font-family:var(--font); background:var(--bg); color:var(--dark); min-height:100vh; -webkit-font-smoothing:antialiased; }
+
+    /* ════════════════════════════════════
+       POPUP
+    ════════════════════════════════════ */
+    .overlay {
+      position:fixed; inset:0;
+      background:rgba(20,20,20,0.58);
+      backdrop-filter:blur(6px);
+      z-index:900;
+      display:flex; align-items:center; justify-content:center;
+      padding:1rem;
+      animation:fadeIn 0.3s ease;
+    }
+    .overlay.gone { display:none; }
+
+    .popup {
+      background:var(--surface);
+      border-radius:var(--r-lg);
+      padding:2.5rem 2rem 1.75rem;
+      max-width:460px; width:100%;
+      box-shadow:var(--sh-lg);
+      animation:slideUp 0.32s ease;
+    }
+
+    .popup-icon { font-size:3.25rem; text-align:center; display:block; margin-bottom:0.875rem; }
+    .popup h2   { font-size:1.4rem; font-weight:900; text-align:center; line-height:1.25; margin-bottom:0.4rem; }
+    .popup-sub  { font-size:0.875rem; color:var(--muted); text-align:center; line-height:1.55; margin-bottom:1.75rem; }
+
+    .field { margin-bottom:1rem; }
+    .field label {
+      display:block;
+      font-size:0.73rem; font-weight:800;
+      text-transform:uppercase; letter-spacing:0.07em;
+      margin-bottom:0.35rem;
+    }
+    .field input, .field select {
+      width:100%;
+      padding:0.75rem 1rem;
+      border:1.5px solid var(--border);
+      border-radius:var(--r-sm);
+      font-family:var(--font); font-size:0.9375rem;
+      color:var(--dark); background:var(--bg);
+      outline:none; transition:border-color 0.2s;
+    }
+    .field input:focus, .field select:focus { border-color:var(--accent-deep); }
+    .field select {
+      appearance:none;
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='7'%3E%3Cpath d='M0 0l5 6 5-6' fill='none' stroke='%23999' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
+      background-repeat:no-repeat; background-position:right 1rem center;
+      padding-right:2.5rem; cursor:pointer;
+    }
+    .field-hint { font-size:0.75rem; color:var(--muted); margin-top:0.3rem; }
+
+    .btn-cta {
+      display:block; width:100%;
+      padding:0.9rem; margin-top:1.25rem;
+      background:var(--dark); color:#fff;
+      font-family:var(--font); font-size:0.9375rem; font-weight:700;
+      text-transform:uppercase; letter-spacing:0.05em;
+      border:none; border-radius:10px; cursor:pointer;
+      transition:background 0.2s;
+    }
+    .btn-cta:hover { background:var(--mid); }
+
+    .btn-skip {
+      display:block; width:100%;
+      padding:0.6rem; margin-top:0.35rem;
+      background:none; border:none;
+      font-family:var(--font); font-size:0.82rem; color:var(--muted);
+      text-decoration:underline; text-underline-offset:2px;
+      cursor:pointer;
+    }
+
+    /* ════════════════════════════════════
+       HEADER
+    ════════════════════════════════════ */
+    header {
+      display:flex; align-items:center; justify-content:center;
+      padding:1.25rem 2rem;
+      background:var(--surface);
+      border-bottom:1px solid var(--border);
+    }
+    .logo {
+      font-weight:900; font-size:1.15rem;
+      text-transform:uppercase; letter-spacing:0.16em;
+      color:var(--dark); text-decoration:none;
+    }
+
+    /* ════════════════════════════════════
+       LAYOUT
+    ════════════════════════════════════ */
+    .wrap { max-width:660px; margin:0 auto; padding:0 1.25rem; }
+
+    /* ════════════════════════════════════
+       INTRO
+    ════════════════════════════════════ */
+    #intro { padding:3.5rem 0 2.5rem; text-align:center; }
+
+    .badge {
+      display:inline-block;
+      background:var(--accent); color:var(--dark);
+      font-size:0.71rem; font-weight:800;
+      text-transform:uppercase; letter-spacing:0.11em;
+      padding:0.3rem 0.9rem; border-radius:var(--r-pill);
+      margin-bottom:1.25rem;
+    }
+
+    #intro h1 {
+      font-size:clamp(1.9rem, 5.5vw, 2.9rem);
+      font-weight:900; line-height:1.08;
+      margin-bottom:1rem;
+    }
+    #intro .sub {
+      font-size:1rem; color:var(--muted);
+      line-height:1.65; max-width:500px;
+      margin:0 auto 2.5rem;
+    }
+
+    .prompt-box {
+      background:var(--surface);
+      border:1.5px solid var(--border);
+      border-left:4px solid var(--accent);
+      border-radius:var(--r-md);
+      padding:1.5rem 1.75rem;
+      text-align:left; margin-bottom:2.5rem;
+    }
+    .prompt-box h3 {
+      font-size:0.71rem; font-weight:800;
+      text-transform:uppercase; letter-spacing:0.1em;
+      color:var(--muted); margin-bottom:0.75rem;
+    }
+    .prompt-box .sentence {
+      font-family:var(--hw); font-size:1.5rem;
+      line-height:1.45; color:var(--dark);
+    }
+    .prompt-box .note {
+      font-size:0.82rem; color:var(--muted);
+      margin-top:0.75rem; line-height:1.55;
+    }
+
+    .btn-start {
+      display:inline-block;
+      padding:1rem 3rem;
+      background:var(--dark); color:#fff;
+      font-family:var(--font); font-size:1rem; font-weight:700;
+      text-transform:uppercase; letter-spacing:0.07em;
+      border:none; border-radius:10px; cursor:pointer;
+      box-shadow:var(--sh-md);
+      transition:background 0.2s, box-shadow 0.2s, transform 0.1s;
+    }
+    .btn-start:hover { background:var(--mid); box-shadow:var(--sh-lg); }
+    .btn-start:active { transform:scale(0.98); }
+
+    /* ════════════════════════════════════
+       QUIZ
+    ════════════════════════════════════ */
+    #quiz { padding:2rem 0 4rem; display:none; }
+
+    .prog-wrap { margin-bottom:2rem; }
+    .prog-meta {
+      display:flex; justify-content:space-between;
+      font-size:0.75rem; font-weight:700;
+      text-transform:uppercase; letter-spacing:0.06em;
+      color:var(--muted); margin-bottom:0.5rem;
+    }
+    .prog-track { height:3px; background:var(--border); border-radius:99px; overflow:hidden; }
+    .prog-fill  { height:100%; background:var(--dark); border-radius:99px; transition:width 0.5s ease; }
+
+    .q-card {
+      background:var(--surface);
+      border-radius:var(--r-lg);
+      padding:2rem 1.75rem;
+      box-shadow:var(--sh-sm);
+      animation:fadeIn 0.28s ease;
+    }
+    .q-num   { font-size:0.71rem; font-weight:800; text-transform:uppercase; letter-spacing:0.12em; color:var(--accent-deep); margin-bottom:0.6rem; }
+    .q-title { font-size:1.25rem; font-weight:900; margin-bottom:0.4rem; line-height:1.3; }
+    .q-hint  { font-size:0.875rem; color:var(--muted); line-height:1.55; margin-bottom:1.5rem; }
+
+    .opts { display:flex; flex-direction:column; gap:0.65rem; }
+
+    .opt {
+      display:flex; align-items:center; gap:1rem;
+      padding:0.875rem 1.25rem;
+      background:var(--bg); border:1.5px solid var(--border);
+      border-radius:var(--r-md); cursor:pointer;
+      transition:border-color 0.18s, background 0.18s;
+      user-select:none;
+    }
+    .opt:hover          { border-color:var(--dark); }
+    .opt.on             { background:var(--dark); border-color:var(--dark); color:#fff; }
+
+    .opt-vis {
+      flex-shrink:0; width:88px; min-height:50px;
+      display:flex; align-items:center; justify-content:center;
+      background:rgba(0,0,0,0.04); border-radius:var(--r-sm);
+      overflow:hidden;
+    }
+    .opt.on .opt-vis    { background:rgba(255,255,255,0.1); }
+
+    .opt-info  { flex:1; min-width:0; }
+    .opt-label { font-weight:800; font-size:0.9rem; }
+    .opt-desc  { font-size:0.78rem; opacity:0.65; margin-top:0.15rem; line-height:1.4; }
+    .opt.on .opt-desc   { opacity:0.8; }
+
+    .btn-next {
+      display:block; width:100%; margin-top:1.25rem;
+      padding:0.9rem;
+      background:var(--dark); color:#fff;
+      font-family:var(--font); font-weight:700; font-size:0.9rem;
+      text-transform:uppercase; letter-spacing:0.05em;
+      border:none; border-radius:10px; cursor:pointer;
+      opacity:0.3; pointer-events:none;
+      transition:opacity 0.2s, background 0.2s;
+    }
+    .btn-next.ready             { opacity:1; pointer-events:all; }
+    .btn-next.ready:hover       { background:var(--mid); }
+
+    /* ════════════════════════════════════
+       RESULTS
+    ════════════════════════════════════ */
+    #results { padding:2.5rem 0 5rem; display:none; animation:fadeIn 0.45s ease; }
+
+    .results-hd            { text-align:center; margin-bottom:1.75rem; }
+    .results-hd h2         { font-size:clamp(1.5rem, 4vw, 2.25rem); font-weight:900; margin-bottom:0.35rem; }
+    .results-hd p          { font-size:0.875rem; color:var(--muted); }
+
+    .p-card {
+      background:var(--dark); color:#fff;
+      border-radius:var(--r-lg); padding:2.75rem 2rem;
+      text-align:center; margin-bottom:1.1rem;
+      position:relative; overflow:hidden;
+    }
+    .p-card::before {
+      content:''; position:absolute; top:-40%; right:-18%;
+      width:320px; height:320px;
+      background:radial-gradient(circle, rgba(221,184,176,0.28) 0%, transparent 68%);
+      pointer-events:none;
+    }
+    .p-emoji  { font-size:4.5rem; display:block; margin-bottom:0.6rem; }
+    .p-tag    { font-size:0.68rem; font-weight:800; text-transform:uppercase; letter-spacing:0.16em; color:var(--accent); margin-bottom:0.35rem; }
+    .p-name   { font-size:clamp(1.8rem, 4.5vw, 2.7rem); font-weight:900; line-height:1.05; margin-bottom:1rem; }
+    .p-desc   { font-size:0.9375rem; line-height:1.75; opacity:0.83; max-width:500px; margin:0 auto 1.5rem; }
+    .p-traits { display:flex; flex-wrap:wrap; gap:0.45rem; justify-content:center; }
+    .p-trait  { padding:0.3rem 0.9rem; background:rgba(255,255,255,0.11); border-radius:var(--r-pill); font-size:0.78rem; font-weight:700; }
+
+    .i-grid   { display:grid; grid-template-columns:1fr 1fr; gap:0.875rem; margin-bottom:1.1rem; }
+    .insight  { background:var(--surface); border-radius:var(--r-md); padding:1.25rem; box-shadow:var(--sh-sm); }
+    .insight h4 { font-size:0.68rem; font-weight:800; text-transform:uppercase; letter-spacing:0.09em; color:var(--muted); margin-bottom:0.4rem; }
+    .insight p  { font-size:0.875rem; font-weight:700; line-height:1.5; }
+
+    .cta-box  { background:var(--surface); border:1.5px solid var(--border); border-radius:var(--r-lg); padding:2rem; text-align:center; }
+    .cta-box h3 { font-size:1.1rem; font-weight:900; margin-bottom:0.4rem; }
+    .cta-box p  { font-size:0.875rem; color:var(--muted); margin-bottom:1.25rem; }
+    .cta-btns   { display:flex; gap:0.75rem; justify-content:center; flex-wrap:wrap; }
+
+    .btn-outline {
+      padding:0.8rem 1.75rem;
+      background:none; border:1.5px solid var(--dark); border-radius:10px;
+      font-family:var(--font); font-weight:700; font-size:0.85rem;
+      text-transform:uppercase; letter-spacing:0.04em;
+      color:var(--dark); cursor:pointer; transition:0.2s;
+    }
+    .btn-outline:hover { background:var(--dark); color:#fff; }
+
+    .btn-shop {
+      padding:0.8rem 1.75rem;
+      background:var(--dark); color:#fff;
+      border:none; border-radius:10px;
+      font-family:var(--font); font-weight:700; font-size:0.85rem;
+      text-transform:uppercase; letter-spacing:0.04em;
+      text-decoration:none; display:inline-block;
+      cursor:pointer; transition:background 0.2s;
+    }
+    .btn-shop:hover { background:var(--mid); }
+
+    /* ── HANDWRITING FONT SHORTHAND ── */
+    .hw { font-family:var(--hw); }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeIn  { from{opacity:0}               to{opacity:1} }
+    @keyframes slideUp { from{transform:translateY(22px);opacity:0} to{transform:translateY(0);opacity:1} }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width:560px) {
+      .i-grid       { grid-template-columns:1fr; }
+      .cta-btns     { flex-direction:column; }
+      .btn-outline, .btn-shop { width:100%; text-align:center; }
+      .popup        { padding:2rem 1.25rem 1.5rem; }
+      #intro h1     { font-size:1.85rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ════════════════════════════════════
+     POPUP MODAL
+════════════════════════════════════ -->
+<div class="overlay" id="overlay">
+  <div class="popup">
+    <span class="popup-icon">🎁</span>
+    <h2>Claim Your Free 6-Pack<br>Pen Refill!</h2>
+    <p class="popup-sub">
+      Fill in your details below to claim a complimentary refill pack for your Mesmos pen —
+      then take the quiz to discover what your handwriting says about you!
+    </p>
+
+    <form id="claimForm" onsubmit="submitClaim(event)">
+      <div class="field">
+        <label for="fname">Your Name</label>
+        <input type="text" id="fname" placeholder="e.g. Sarah Johnson" required autocomplete="name">
+      </div>
+
+      <div class="field">
+        <label for="fdob">Date of Birth</label>
+        <input type="date" id="fdob" required>
+        <p class="field-hint">We use this so we can celebrate you on your birthday! 🎂</p>
+      </div>
+
+      <div class="field">
+        <label for="fpen">Which Pen Set Did You Buy?</label>
+        <select id="fpen" required>
+          <option value="" disabled selected>Select your pen set</option>
+          <optgroup label="✦ Pastel Series">
+            <option>Pastel — Appreciate Pen Set</option>
+            <option>Pastel — Inspire Pen Set</option>
+            <option>Pastel — Chaos Coordinator Pen Set</option>
+          </optgroup>
+          <optgroup label="✦ Classic Series">
+            <option>Classic — Van Gogh Pen Set</option>
+          </optgroup>
+          <optgroup label="✦ Midnight Series">
+            <option>Midnight — Boss Pen Set</option>
+            <option>Midnight — Inspire Pen Set</option>
+          </optgroup>
+          <optgroup label="✦ Ombre Series">
+            <option>Ombre — Courageous Pen Set</option>
+            <option>Ombre — Affirmation Pen Set</option>
+          </optgroup>
+          <option value="other">Other / Not Listed</option>
+        </select>
+        <p class="field-hint">Not sure? Check the barcode label on the back of your pen box. 📦</p>
+      </div>
+
+      <button type="submit" class="btn-cta">Claim My Refill &amp; Start the Quiz →</button>
+    </form>
+
+    <button class="btn-skip" onclick="skipClaim()">Skip for now — I just want the quiz</button>
+  </div>
+</div>
+
+
+<!-- ════════════════════════════════════
+     HEADER
+════════════════════════════════════ -->
+<header>
+  <a href="https://mesmos.co" class="logo">Mesmos</a>
+</header>
+
+
+<!-- ════════════════════════════════════
+     MAIN
+════════════════════════════════════ -->
+<main>
+  <div class="wrap">
+
+    <!-- ── INTRO ── -->
+    <section id="intro">
+      <span class="badge">Graphology Quiz</span>
+      <h1>What Does Your Handwriting<br>Say About You?</h1>
+      <p class="sub">
+        Your handwriting is more than letters on a page — it's a window into your personality.
+        Answer 10 questions about your writing style and discover the character traits hidden in every stroke.
+      </p>
+
+      <div class="prompt-box">
+        <h3>Step 1 — Grab Your Pen &amp; Write This</h3>
+        <p class="sentence">"The quick brown fox jumps over the lazy dog."</p>
+        <p class="note">
+          Write this sentence naturally on a piece of paper — don't try to change or tidy up your handwriting.
+          Once you're done, come back and answer the 10 questions based on exactly what you see.
+        </p>
+      </div>
+
+      <button class="btn-start" onclick="startQuiz()">I'm Ready — Start the Quiz</button>
+    </section>
+
+
+    <!-- ── QUIZ ── -->
+    <section id="quiz">
+      <div class="prog-wrap">
+        <div class="prog-meta">
+          <span id="qLabel">Question 1 of 10</span>
+          <span id="qPct">10%</span>
+        </div>
+        <div class="prog-track">
+          <div class="prog-fill" id="progFill" style="width:10%"></div>
+        </div>
+      </div>
+
+      <div id="qContainer"></div>
+      <button class="btn-next" id="btnNext" onclick="next()">Continue →</button>
+    </section>
+
+
+    <!-- ── RESULTS ── -->
+    <section id="results">
+      <div class="results-hd">
+        <span class="badge">Your Results</span>
+        <h2 id="greeting">Your Handwriting Reveals…</h2>
+        <p>Based on 10 dimensions of graphological analysis</p>
+      </div>
+      <div id="pCard"></div>
+      <div class="i-grid" id="iGrid"></div>
+      <div class="cta-box">
+        <h3>Write More. Reveal More.</h3>
+        <p>Every great personality deserves a great pen. Find your perfect writing companion from the Mesmos collection.</p>
+        <div class="cta-btns">
+          <button class="btn-outline" onclick="retake()">Retake the Quiz</button>
+          <a href="https://mesmos.co/collections/pen-sets" class="btn-shop">Shop Pen Sets</a>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</main>
+
+
+<!-- ════════════════════════════════════
+     JAVASCRIPT
+════════════════════════════════════ -->
+<script>
+/* ──────────────────────────────────────
+   STATE
+────────────────────────────────────── */
+let userName  = '';
+let qIndex    = 0;
+let picked    = [];
+let score     = { social:0, emotion:0, drive:0, outlook:0, order:0 };
+
+/* ──────────────────────────────────────
+   QUIZ DATA
+   Score keys: social, emotion, drive, outlook, order
+   Positive = extrovert / open / ambitious / optimistic / structured
+   Negative = introvert / reserved / relaxed / pragmatic / free-spirited
+────────────────────────────────────── */
+const questions = [
+  /* Q1 — Letter Size */
+  {
+    title: "How large are your letters?",
+    hint:  "Compare the height of your letters to the natural line height on the page.",
+    opts: [
+      {
+        label: "Large",
+        desc:  "Letters are tall — they reach or extend past the top of the line",
+        vis:   `<span class="hw" style="font-size:2rem;font-weight:700;line-height:1">Aa</span>`,
+        score: { social:2, drive:1 }
+      },
+      {
+        label: "Average",
+        desc:  "Letters sit at a natural, balanced height — not too big or small",
+        vis:   `<span class="hw" style="font-size:1.25rem;font-weight:600">Aa</span>`,
+        score: {}
+      },
+      {
+        label: "Small or Tiny",
+        desc:  "Letters are noticeably compact — they sit low and are quite small",
+        vis:   `<span class="hw" style="font-size:0.78rem;font-weight:600">Aa</span>`,
+        score: { social:-2, order:1 }
+      }
+    ]
+  },
+
+  /* Q2 — Slant */
+  {
+    title: "Which way do your letters slant?",
+    hint:  "Imagine a vertical line through your letters — do they lean forward, backward, or stand straight?",
+    opts: [
+      {
+        label: "Forward — leans right",
+        desc:  "Letters angle noticeably to the right",
+        vis:   `<span class="hw" style="font-size:1.4rem;display:inline-block;transform:skewX(-15deg)">Hello</span>`,
+        score: { social:1, emotion:2 }
+      },
+      {
+        label: "Upright — perfectly vertical",
+        desc:  "Letters stand straight up with no lean at all",
+        vis:   `<span class="hw" style="font-size:1.4rem">Hello</span>`,
+        score: { emotion:-1, order:1 }
+      },
+      {
+        label: "Backward — leans left",
+        desc:  "Letters angle to the left",
+        vis:   `<span class="hw" style="font-size:1.4rem;display:inline-block;transform:skewX(15deg)">Hello</span>`,
+        score: { social:-1, emotion:-2 }
+      }
+    ]
+  },
+
+  /* Q3 — Pressure */
+  {
+    title: "How hard do you press the pen?",
+    hint:  "Flip your paper over — how deep are the grooves from your writing?",
+    opts: [
+      {
+        label: "Heavy — strong, deep grooves",
+        desc:  "You press firmly — the impression is clearly visible on the other side",
+        vis:   `<span class="hw" style="font-size:1.5rem;font-weight:700;color:#111;text-shadow:0 1px 0 #555">Aa</span>`,
+        score: { drive:2, emotion:1 }
+      },
+      {
+        label: "Medium — moderate impression",
+        desc:  "Consistent, balanced pressure throughout",
+        vis:   `<span class="hw" style="font-size:1.5rem;font-weight:500;color:#444">Aa</span>`,
+        score: {}
+      },
+      {
+        label: "Light — barely any impression",
+        desc:  "Very faint marks — almost no groove felt on the other side",
+        vis:   `<span class="hw" style="font-size:1.5rem;font-weight:400;color:#bbb">Aa</span>`,
+        score: { emotion:2, drive:-1 }
+      }
+    ]
+  },
+
+  /* Q4 — Word Spacing */
+  {
+    title: "How much space is between your words?",
+    hint:  "Look at the gaps between each word in your sentence.",
+    opts: [
+      {
+        label: "Wide gaps",
+        desc:  "Large, generous spaces between each word",
+        vis:   `<span class="hw" style="font-size:0.95rem;word-spacing:1.1rem;white-space:nowrap">fox  dog</span>`,
+        score: { social:-1, drive:1 }
+      },
+      {
+        label: "Normal spacing",
+        desc:  "Natural, even gaps — nothing unusual",
+        vis:   `<span class="hw" style="font-size:0.95rem">fox dog</span>`,
+        score: {}
+      },
+      {
+        label: "Narrow / cramped",
+        desc:  "Words are squeezed close together with little space between them",
+        vis:   `<span class="hw" style="font-size:0.95rem;word-spacing:-0.2rem">fox dog</span>`,
+        score: { social:2 }
+      }
+    ]
+  },
+
+  /* Q5 — i-Dot */
+  {
+    title: "How do you dot your lowercase 'i'?",
+    hint:  "Look closely at the dots above your i's — where are they placed and what do they look like?",
+    opts: [
+      {
+        label: "High — floats well above",
+        desc:  "The dot sits far above the letter stem",
+        vis:   `<span class="hw" style="font-size:1.7rem;line-height:1.1;display:flex;align-items:flex-end;justify-content:center;gap:0"><span style="position:relative">ı<span style="position:absolute;top:-12px;left:50%;transform:translateX(-50%);font-size:1rem">·</span></span></span>`,
+        score: { outlook:2 }
+      },
+      {
+        label: "Precisely placed — right above",
+        desc:  "A neat, accurate dot exactly above the stem",
+        vis:   `<span class="hw" style="font-size:1.7rem">i</span>`,
+        score: { order:2 }
+      },
+      {
+        label: "Circle or bubble",
+        desc:  "A small open circle instead of a dot",
+        vis:   `<span class="hw" style="font-size:1.7rem;line-height:1.1;display:flex;align-items:flex-end;justify-content:center"><span style="position:relative">ı<span style="position:absolute;top:-12px;left:50%;transform:translateX(-50%);font-size:0.7rem">○</span></span></span>`,
+        score: { outlook:1, emotion:1, social:1 }
+      },
+      {
+        label: "Slashed or dashed",
+        desc:  "A short line or slash rather than a dot",
+        vis:   `<span class="hw" style="font-size:1.7rem;line-height:1.1;display:flex;align-items:flex-end;justify-content:center"><span style="position:relative">ı<span style="position:absolute;top:-10px;left:50%;transform:translateX(-50%);font-size:0.85rem">–</span></span></span>`,
+        score: { drive:1, emotion:-1 }
+      },
+      {
+        label: "Left of the stem",
+        desc:  "Dot drifts to the left, not sitting above the letter",
+        vis:   `<span class="hw" style="font-size:1.7rem;line-height:1.1;display:flex;align-items:flex-end;justify-content:center"><span style="position:relative"><span style="position:absolute;top:-10px;left:-8px;font-size:1rem">·</span>ı</span></span>`,
+        score: { drive:-1, order:-1 }
+      }
+    ]
+  },
+
+  /* Q6 — T-bar */
+  {
+    title: "How do you cross your lowercase 't'?",
+    hint:  "Look at the horizontal bar through your t's — how long is it and where does it sit on the stem?",
+    opts: [
+      {
+        label: "High &amp; long — sweeping bar",
+        desc:  "The bar sits near the top of the stem and extends wide on both sides",
+        vis:   `<span class="hw" style="font-size:1.7rem;font-weight:600">t̄</span>`,
+        score: { drive:2, outlook:1 }
+      },
+      {
+        label: "Middle — neat and centred",
+        desc:  "A tidy crossing right in the middle of the stem",
+        vis:   `<span class="hw" style="font-size:1.7rem">t</span>`,
+        score: { order:1 }
+      },
+      {
+        label: "Short &amp; low — small crossing",
+        desc:  "A brief, minimal bar low on the stem",
+        vis:   `<span class="hw" style="font-size:1.7rem;letter-spacing:-0.05em;opacity:0.65">t</span>`,
+        score: { drive:-2 }
+      }
+    ]
+  },
+
+  /* Q7 — Loops */
+  {
+    title: "What do your looped letters look like?",
+    hint:  "Look at letters like 'l', 'b', and 'e' — how are the loops shaped?",
+    opts: [
+      {
+        label: "Wide, open &amp; flowing",
+        desc:  "Loops are generous, round, and relaxed",
+        vis:   `<span class="hw" style="font-size:1.8rem;font-weight:400">le</span>`,
+        score: { emotion:1, social:1 }
+      },
+      {
+        label: "Narrow &amp; tight",
+        desc:  "Loops are compressed and close together",
+        vis:   `<span class="hw" style="font-size:1.8rem;font-weight:700;letter-spacing:-0.06em">le</span>`,
+        score: { drive:1, emotion:-1 }
+      },
+      {
+        label: "Barely there — angular",
+        desc:  "Minimal loops — more like straight strokes or retraced lines",
+        vis:   `<span class="hw" style="font-size:1.8rem;font-weight:900">le</span>`,
+        score: { order:1, emotion:-1 }
+      }
+    ]
+  },
+
+  /* Q8 — Letter Shapes */
+  {
+    title: "What shape do your letters tend to be?",
+    hint:  "Step back and look at the overall shape of your letters — curved, pointed, or connected?",
+    opts: [
+      {
+        label: "Rounded &amp; soft",
+        desc:  "Letters have gentle, curved, friendly edges",
+        vis:   `<span class="hw" style="font-size:1.05rem;font-weight:400;letter-spacing:0.03em">The fox</span>`,
+        score: { emotion:1, outlook:1 }
+      },
+      {
+        label: "Pointed &amp; angular",
+        desc:  "Letters have sharp peaks and angular edges",
+        vis:   `<span class="hw" style="font-size:1.05rem;font-weight:800;letter-spacing:-0.02em">The fox</span>`,
+        score: { drive:1, emotion:-1 }
+      },
+      {
+        label: "Connected — letters link up",
+        desc:  "Letters flow into each other with no pen lifts between them",
+        vis:   `<span class="hw" style="font-size:1.05rem;font-style:italic;font-weight:600;letter-spacing:0.01em">The fox</span>`,
+        score: { order:1, drive:1 }
+      }
+    ]
+  },
+
+  /* Q9 — Letter 'o' */
+  {
+    title: "How is your letter 'o' formed?",
+    hint:  "Look closely at the o's in your sentence — is the top of the circle open or completely closed?",
+    opts: [
+      {
+        label: "Open at the top",
+        desc:  "There's a small gap or opening where the loop begins and ends",
+        vis:   `<span class="hw" style="font-size:2.4rem;font-weight:300;letter-spacing:-0.05em">o</span>`,
+        score: { social:2, emotion:1 }
+      },
+      {
+        label: "Completely sealed",
+        desc:  "The 'o' is a tight, perfectly closed circle",
+        vis:   `<span class="hw" style="font-size:2.4rem;font-weight:800">o</span>`,
+        score: { social:-2, emotion:-1 }
+      }
+    ]
+  },
+
+  /* Q10 — Signature */
+  {
+    title: "How does your signature look?",
+    hint:  "Sign your name naturally below the sentence — what does it look like?",
+    opts: [
+      {
+        label: "Large &amp; legible",
+        desc:  "Clear, bold, and easy to read — your name is obvious",
+        vis:   `<span class="hw" style="font-size:1.3rem;font-weight:700">Sarah J.</span>`,
+        score: { social:2, drive:1 }
+      },
+      {
+        label: "Small &amp; modest",
+        desc:  "Smaller than your handwriting — understated and humble",
+        vis:   `<span class="hw" style="font-size:0.85rem;font-weight:600">sarah j.</span>`,
+        score: { social:-1, emotion:-1 }
+      },
+      {
+        label: "Illegible scrawl",
+        desc:  "Fast, stylised swirls — hard for others to read",
+        vis:   `<span class="hw" style="font-size:1.2rem;font-style:italic;opacity:0.7">S&#126;j~~</span>`,
+        score: { social:-1, emotion:1 }
+      },
+      {
+        label: "Underlined or decorated",
+        desc:  "Has a flourish, underline, or added embellishment beneath",
+        vis:   `<span class="hw" style="font-size:1.2rem;text-decoration:underline;text-underline-offset:4px">Sarah J.</span>`,
+        score: { drive:2, order:1 }
+      }
+    ]
+  }
+];
+
+/* ──────────────────────────────────────
+   PERSONALITY TYPES
+────────────────────────────────────── */
+const personas = {
+  visionary: {
+    emoji:  '🌟',
+    name:   'The Visionary',
+    desc:   "Your handwriting reveals a bold, driven personality with an eye firmly fixed on the horizon. You think big, act decisively, and your natural charisma draws people effortlessly into your orbit. You were made to lead — and when you step into that role, others genuinely and gladly follow.",
+    traits: ['Charismatic','Ambitious','Optimistic','Action-Oriented','Inspiring'],
+    s:      'Leading, energising people, and turning bold ideas into real outcomes',
+    c:      "Patience — you move fast, and your pace isn't always everyone else's",
+    w:      'Leadership, entrepreneurship, and any role where you set the vision',
+    soc:    "The life of the room — you're energised by people and thrive on attention"
+  },
+  connector: {
+    emoji:  '💛',
+    name:   'The Empathetic Connector',
+    desc:   "Your handwriting reveals a deeply emotionally intelligent soul. You feel what others feel, you listen with your whole heart, and you build relationships that go genuinely deep. People trust you instinctively — you're the person they call when it really matters.",
+    traits: ['Empathetic','Warm','Perceptive','Nurturing','Loyal'],
+    s:      'Deep listening, emotional insight, and building bonds that last',
+    c:      "Setting boundaries — you give so much of yourself to the people you love",
+    w:      'Counselling, teaching, healthcare, or any meaningful people-facing role',
+    soc:    "The heart of your circle — the confidant everyone turns to first"
+  },
+  achiever: {
+    emoji:  '🎯',
+    name:   'The Dependable Achiever',
+    desc:   "Your handwriting reveals a methodical, reliable, high-performing personality. You set goals and you reach them — every single time. Others count on you completely, and you never let them down. Your consistency and follow-through are genuinely rare and powerful qualities.",
+    traits: ['Reliable','Disciplined','Goal-Oriented','Practical','Consistent'],
+    s:      'Follow-through, organisation, and delivering results under pressure',
+    c:      "Flexibility — unexpected changes to the plan can feel deeply unsettling",
+    w:      'Operations, project management, finance, or any structured, goal-driven role',
+    soc:    "Deeply trusted — the friend who always shows up, without exception"
+  },
+  creativeSoul: {
+    emoji:  '🎨',
+    name:   'The Creative Soul',
+    desc:   "Your handwriting reveals a richly imaginative inner world. You experience life in vivid, saturated colour — ideas flow freely, beauty catches your eye everywhere, and your creative energy is genuinely impossible to contain. You bring originality and unexpected depth to everything you touch.",
+    traits: ['Creative','Imaginative','Expressive','Intuitive','Sensitive'],
+    s:      'Original thinking, artistic expression, and noticing what others walk past',
+    c:      "Finishing — you're brilliant at starting things and less fond of endings",
+    w:      'Design, writing, art, music, or any creative outlet for self-expression',
+    soc:    "Magnetic — your perspective is always unexpected, fascinating, and fresh"
+  },
+  strategist: {
+    emoji:  '🧠',
+    name:   'The Independent Strategist',
+    desc:   "Your handwriting reveals a sharp, analytical mind that works best entirely on its own terms. You are precise, deliberate, and exceptionally self-reliant. You solve complex problems with calm, logical clarity — and your high standards produce results that consistently exceed expectation.",
+    traits: ['Analytical','Self-Reliant','Precise','Strategic','Focused'],
+    s:      'Problem-solving, independent deep work, and rigorous clear thinking',
+    c:      "Delegating — it's often just faster and easier to do it yourself",
+    w:      'Research, strategy, law, engineering, or any intellectually demanding role',
+    soc:    "Selective with your inner circle — you value depth and authenticity above all"
+  },
+  observer: {
+    emoji:  '🌿',
+    name:   'The Quiet Observer',
+    desc:   "Your handwriting reveals a deeply thoughtful, perceptive, and patient nature. Where others rush, you pause and notice. You consistently catch details everyone else misses, and your quiet wisdom makes you someone people genuinely seek out for measured, considered perspective.",
+    traits: ['Observant','Thoughtful','Patient','Detail-Oriented','Wise'],
+    s:      'Catching nuance, deep processing, and offering calm, steady presence',
+    c:      "Self-promotion — your many gifts often go quietly and unnecessarily unannounced",
+    w:      'Writing, research, analysis, or any role that deeply rewards careful thinking',
+    soc:    "Small, deep connections over large social gatherings — substance over breadth"
+  },
+  freeSpirit: {
+    emoji:  '🌈',
+    name:   'The Free Spirit',
+    desc:   "Your handwriting reveals someone who lives vividly and joyfully in the present moment. You are spontaneous, open-minded, and refreshingly unpredictable. Your genuine enthusiasm for life is contagious — you make everything more fun and more alive just by being there.",
+    traits: ['Spontaneous','Open-Minded','Expressive','Adventurous','Fun-Loving'],
+    s:      'Adaptability, enthusiasm, and lifting the energy of everyone around you',
+    c:      "Routine — too much structure and repetition can feel genuinely suffocating",
+    w:      'Roles with variety, creativity, travel, or constant human interaction',
+    soc:    "Everyone's favourite — you bring warmth and lightness wherever you go"
+  },
+  perfectionist: {
+    emoji:  '💎',
+    name:   'The Passionate Perfectionist',
+    desc:   "Your handwriting reveals someone who simply doesn't settle. Your standards are exceptionally high, your focus is laser-sharp, and the quality of everything you do reflects both. You care deeply about getting things right — and your commitment to excellence is something others genuinely admire.",
+    traits: ['Detail-Oriented','Determined','High Standards','Focused','Intense'],
+    s:      'Precision, craftsmanship, and work that truly and consistently stands out',
+    c:      "Letting go — not everything needs to be perfect, but you already know that",
+    w:      'Roles requiring mastery, fine craft, and the relentless pursuit of excellence',
+    soc:    "Deeply loyal and devoted to a very small, very carefully chosen inner circle"
+  }
+};
+
+/* ──────────────────────────────────────
+   POPUP LOGIC
+────────────────────────────────────── */
+function submitClaim(e) {
+  e.preventDefault();
+  const raw = document.getElementById('fname').value.trim();
+  userName  = raw.split(' ')[0]; // first name only
+  closeOverlay();
+}
+function skipClaim()    { closeOverlay(); }
+function closeOverlay() { document.getElementById('overlay').classList.add('gone'); }
+
+/* ──────────────────────────────────────
+   QUIZ LOGIC
+────────────────────────────────────── */
+function startQuiz() {
+  document.getElementById('intro').style.display = 'none';
+  document.getElementById('quiz').style.display  = 'block';
+  render();
+}
+
+function render() {
+  const q   = questions[qIndex];
+  const pct = Math.round(((qIndex + 1) / questions.length) * 100);
+
+  document.getElementById('qLabel').textContent    = `Question ${qIndex + 1} of ${questions.length}`;
+  document.getElementById('qPct').textContent      = pct + '%';
+  document.getElementById('progFill').style.width  = pct + '%';
+
+  const optsHTML = q.opts.map((o, i) => `
+    <div class="opt" id="opt${i}" onclick="pick(${i})">
+      <div class="opt-vis">${o.vis}</div>
+      <div class="opt-info">
+        <div class="opt-label">${o.label}</div>
+        <div class="opt-desc">${o.desc}</div>
+      </div>
+    </div>`).join('');
+
+  document.getElementById('qContainer').innerHTML = `
+    <div class="q-card">
+      <div class="q-num">Question ${qIndex + 1} of ${questions.length}</div>
+      <h2 class="q-title">${q.title}</h2>
+      <p class="q-hint">${q.hint}</p>
+      <div class="opts">${optsHTML}</div>
+    </div>`;
+
+  const btn = document.getElementById('btnNext');
+  btn.classList.remove('ready');
+  btn.textContent = qIndex === questions.length - 1 ? 'See My Results →' : 'Continue →';
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function pick(i) {
+  document.querySelectorAll('.opt').forEach(el => el.classList.remove('on'));
+  document.getElementById('opt' + i).classList.add('on');
+  picked[qIndex] = i;
+  document.getElementById('btnNext').classList.add('ready');
+}
+
+function next() {
+  if (picked[qIndex] === undefined) return;
+
+  // Apply scores from selected option
+  const opt = questions[qIndex].opts[picked[qIndex]];
+  for (const [k, v] of Object.entries(opt.score || {})) {
+    score[k] = (score[k] || 0) + v;
+  }
+
+  qIndex++;
+  if (qIndex >= questions.length) showResults();
+  else render();
+}
+
+/* ──────────────────────────────────────
+   RESULTS
+────────────────────────────────────── */
+function classify() {
+  const { social, emotion, drive, outlook, order } = score;
+
+  // Extroverted branch
+  if (social >= 3) {
+    if (drive   >= 2) return 'visionary';
+    if (emotion >= 2) return 'connector';
+    return 'freeSpirit';
+  }
+
+  // Introverted branch
+  if (social <= -2) {
+    if (drive >= 2)  return 'perfectionist';
+    if (order >= 2)  return 'strategist';
+    return 'observer';
+  }
+
+  // Balanced / ambivert branch
+  if ((outlook >= 2) || (emotion >= 1 && outlook >= 1)) return 'creativeSoul';
+  if ((drive   >= 2) || (order   >= 2))                 return 'achiever';
+  if (emotion  >= 1)                                    return 'connector';
+  if (drive    >= 1)                                    return 'achiever';
+  return 'observer'; // thoughtful default
+}
+
+function showResults() {
+  document.getElementById('quiz').style.display    = 'none';
+  document.getElementById('results').style.display = 'block';
+
+  const type = classify();
+  const p    = personas[type];
+
+  document.getElementById('greeting').textContent =
+    userName ? `${userName}, Your Handwriting Reveals…` : 'Your Handwriting Reveals…';
+
+  document.getElementById('pCard').innerHTML = `
+    <div class="p-card">
+      <span class="p-emoji">${p.emoji}</span>
+      <div class="p-tag">Your Personality Type</div>
+      <h2 class="p-name">${p.name}</h2>
+      <p class="p-desc">${p.desc}</p>
+      <div class="p-traits">${p.traits.map(t => `<span class="p-trait">${t}</span>`).join('')}</div>
+    </div>`;
+
+  document.getElementById('iGrid').innerHTML = `
+    <div class="insight"><h4>Your Strengths</h4><p>${p.s}</p></div>
+    <div class="insight"><h4>Your Challenge</h4><p>${p.c}</p></div>
+    <div class="insight"><h4>Work Style</h4><p>${p.w}</p></div>
+    <div class="insight"><h4>Social Energy</h4><p>${p.soc}</p></div>`;
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function retake() {
+  qIndex = 0;
+  picked = [];
+  score  = { social:0, emotion:0, drive:0, outlook:0, order:0 };
+  document.getElementById('results').style.display = 'none';
+  document.getElementById('quiz').style.display    = 'block';
+  render();
+}
+</script>
+
+</body>
+</html>
