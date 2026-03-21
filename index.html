@@ -543,31 +543,32 @@ function linedBox(inner) {
   return `<div style="position:relative;width:88px;height:50px;background:#fff;background-image:repeating-linear-gradient(transparent,transparent 15px,#e4dbd3 15px,#e4dbd3 16.5px);border-radius:6px;display:flex;align-items:center;justify-content:center;overflow:hidden">${inner}</div>`;
 }
 
-/* Q6, word "strong" in Caveat with a red crossbar at different heights on the 't' */
+/* Q6, word "strong" in Caveat with a red crossbar at different heights on the 't'
+   leftPx = distance from left edge, rightPx = distance from right edge (CSS right property) */
 function tbarVis(topPct, leftPx, rightPx) {
-  return `<div style="position:relative;width:92px;height:52px;background:#ffffff;border-radius:6px;display:flex;align-items:center;justify-content:center;overflow:hidden">
-    <span style="font-family:'Caveat',cursive;font-size:1.1rem;color:#1F1F1F;white-space:nowrap;position:relative;z-index:1">strong</span>
-    <div style="position:absolute;z-index:2;left:${leftPx}px;right:${rightPx}px;height:3px;background:#E53935;border-radius:2px;top:${topPct}%"></div>
+  return `<div style="position:relative;width:92px;height:54px;background:#ffffff;border-radius:6px;display:flex;align-items:center;justify-content:center;overflow:hidden">
+    <span style="font-family:'Caveat',cursive;font-size:1.3rem;color:#1F1F1F;white-space:nowrap;position:relative;z-index:1">strong</span>
+    <div style="position:absolute;z-index:2;left:${leftPx}px;right:${rightPx}px;height:3.5px;background:#E53935;border-radius:2px;top:${topPct}%"></div>
   </div>`;
 }
 
-/* Q7, SVG letter 'g' with different descender loop shapes */
-/* Bowl: M36 20 A13 13 0 1 0 36 22 = almost full CCW circle (large-arc, sweep=0) */
-const gWide = `<svg viewBox="0 0 52 82" width="38" height="60" xmlns="http://www.w3.org/2000/svg">
-  <!-- Bowl -->
-  <path d="M36 20 A13 13 0 1 0 36 22 L36 50 C36 72 10 74 9 57 C8 42 20 40 30 42"
+/* Q7, SVG letter 'g' with clearly different descender loop shapes
+   Bowl: M36 20 A13 13 0 1 0 36 22 = CCW large-arc (sweep=0) almost full circle
+   Baseline at y=42, loop extends below */
+const gWide = `<svg viewBox="0 0 50 82" width="38" height="60" xmlns="http://www.w3.org/2000/svg">
+  <path d="M36 20 A13 13 0 1 0 36 22 L36 42
+    C36 60 36 74 22 74 C8 74 8 60 8 48 C8 38 20 38 34 40"
     fill="none" stroke="#1F1F1F" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>`;
 
-const gNarrow = `<svg viewBox="0 0 52 82" width="38" height="60" xmlns="http://www.w3.org/2000/svg">
-  <!-- Bowl (slightly smaller) -->
-  <path d="M34 22 A11 11 0 1 0 34 24 L34 50 C34 66 20 66 19 55 C18 44 26 42 32 44"
+const gNarrow = `<svg viewBox="0 0 50 82" width="38" height="60" xmlns="http://www.w3.org/2000/svg">
+  <path d="M34 22 A11 11 0 1 0 34 24 L34 42
+    C34 56 26 62 22 60 C18 58 18 48 20 44 C22 40 28 40 32 42"
     fill="none" stroke="#1F1F1F" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>`;
 
-const gNoLoop = `<svg viewBox="0 0 52 82" width="38" height="60" xmlns="http://www.w3.org/2000/svg">
-  <!-- Bowl then a simple hook with no closed loop -->
-  <path d="M34 22 A12 12 0 1 0 34 24 L34 56 Q33 72 20 74 Q10 74 12 64"
+const gNoLoop = `<svg viewBox="0 0 50 82" width="38" height="60" xmlns="http://www.w3.org/2000/svg">
+  <path d="M34 22 A12 12 0 1 0 34 24 L34 52 Q30 70 20 72 Q12 72 14 64"
     fill="none" stroke="#1F1F1F" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>`;
 
@@ -747,19 +748,19 @@ const questions = [
       {
         label: "High &amp; long, near the top",
         desc:  "The bar sweeps wide and sits close to the top of the stem",
-        vis:   tbarVis(19, 4, 32),
+        vis:   tbarVis(16, 1, 6),
         score: { drive:2, outlook:1 }
       },
       {
         label: "Middle, neat and centred",
         desc:  "The bar crosses right in the middle of the stem",
-        vis:   tbarVis(36, 16, 43),
+        vis:   tbarVis(37, 12, 40),
         score: { order:1 }
       },
       {
         label: "Short &amp; low, near the bottom",
         desc:  "A small, minimal bar sitting low on the stem",
-        vis:   tbarVis(52, 22, 54),
+        vis:   tbarVis(57, 23, 58),
         score: { drive:-2 }
       }
     ]
