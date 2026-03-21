@@ -396,15 +396,14 @@
 <body>
 
 <!-- ════════════════════════════════════
-     POPUP 1 — CLAIM REFILL
+     POPUP 1, CLAIM REFILL
 ════════════════════════════════════ -->
 <div class="overlay" id="overlay1">
   <div class="popup">
     <span class="popup-icon">🎁</span>
     <h2>Claim Your Free<br>6-Pack Pen Refill!</h2>
     <p class="popup-sub">
-      Fill in your details below and we'll send you an email with the next steps —
-      so we can get your complimentary refills on their way to you!
+      Fill in your details below and we'll email you the next steps to get your complimentary refills on their way!
     </p>
 
     <form id="claimForm" onsubmit="submitClaim(event)">
@@ -423,19 +422,19 @@
         <label for="fpen">Which Pen Set Do You Have?</label>
         <input type="text" id="fpen"
                required autocomplete="off">
-        <p class="field-hint">Flip your pen box over — the product name is printed just below the barcode label. 📦</p>
+        <p class="field-hint">Flip your pen box over. The product name is printed just below the barcode label. 📦</p>
       </div>
 
       <button type="submit" class="btn-cta">Claim My Refill &amp; Start the Quiz →</button>
     </form>
 
-    <button class="btn-skip" onclick="skipClaim()">Skip for now — I just want the quiz</button>
+    <button class="btn-skip" onclick="skipClaim()">Skip for now, I just want the quiz</button>
   </div>
 </div>
 
 
 <!-- ════════════════════════════════════
-     POPUP 2 — CHECK EMAIL
+     POPUP 2, CHECK EMAIL
 ════════════════════════════════════ -->
 <div class="overlay gone" id="overlay2">
   <div class="popup">
@@ -446,7 +445,7 @@
       get your free 6 pack of refills sent to you right away!<br><br>
       Now, let's find out what your handwriting says about you!
     </p>
-    <button class="btn-cta" onclick="closeEmail()">Let's Go — Start the Quiz →</button>
+    <button class="btn-cta" onclick="closeEmail()">Let's Go, Start the Quiz →</button>
   </div>
 </div>
 
@@ -470,20 +469,20 @@
       <span class="badge">Graphology Quiz</span>
       <h1>What Does Your Handwriting<br>Say About You?</h1>
       <p class="sub">
-        Your handwriting is more than letters on a page — it's a window into your personality.
+        Your handwriting is more than letters on a page, it's a window into your personality.
         Answer 10 questions about your writing style and discover the character traits hidden in every stroke.
       </p>
 
       <div class="prompt-box">
-        <h3>Step 1 — Grab Your Pen &amp; Write This Affirmation</h3>
+        <h3>Step 1: Grab Your Pen &amp; Write This Affirmation</h3>
         <p class="sentence">"I am strong, I am worthy, and every day I am becoming the best version of myself."</p>
         <p class="note">
-          Write this in your most natural handwriting — don't slow down or tidy it up.
+          Write this in your most natural handwriting, don't slow down or tidy it up.
           Once you're done, come back and answer the 10 questions based on exactly what you see on the page.
         </p>
       </div>
 
-      <button class="btn-start" onclick="startQuiz()">I'm Ready — Start the Quiz</button>
+      <button class="btn-start" onclick="startQuiz()">I'm Ready, Start the Quiz</button>
     </section>
 
 
@@ -536,7 +535,7 @@
 ════════════════════════════════════ -->
 <script>
 /* ──────────────────────────────────────
-   HELPERS — reusable visuals
+   HELPERS, reusable visuals
 ────────────────────────────────────── */
 
 /* Lined-paper box wrapping any inner HTML */
@@ -544,18 +543,15 @@ function linedBox(inner) {
   return `<div style="position:relative;width:88px;height:50px;background:#fff;background-image:repeating-linear-gradient(transparent,transparent 15px,#e4dbd3 15px,#e4dbd3 16.5px);border-radius:6px;display:flex;align-items:center;justify-content:center;overflow:hidden">${inner}</div>`;
 }
 
-/* Q6 — word "strong" in Caveat SVG with a red crossbar at different heights/widths */
-function tbarVis(barY, barX1, barX2) {
-  return `<svg viewBox="0 0 130 56" width="100%" height="50" xmlns="http://www.w3.org/2000/svg" style="display:block;max-width:108px">
-    <line x1="0" y1="18" x2="130" y2="18" stroke="#e4dbd3" stroke-width="1.5"/>
-    <line x1="0" y1="36" x2="130" y2="36" stroke="#e4dbd3" stroke-width="1.5"/>
-    <line x1="0" y1="54" x2="130" y2="54" stroke="#e4dbd3" stroke-width="1.5"/>
-    <text x="5" y="44" font-family="Caveat, cursive" font-size="32" fill="#1F1F1F">strong</text>
-    <line x1="${barX1}" y1="${barY}" x2="${barX2}" y2="${barY}" stroke="#E53935" stroke-width="3" stroke-linecap="round"/>
-  </svg>`;
+/* Q6, word "strong" in Caveat with a red crossbar at different heights on the 't' */
+function tbarVis(topPct, leftPx, rightPx) {
+  return `<div style="position:relative;width:92px;height:52px;background:#ffffff;border-radius:6px;display:flex;align-items:center;justify-content:center;overflow:hidden">
+    <span style="font-family:'Caveat',cursive;font-size:1.1rem;color:#1F1F1F;white-space:nowrap;position:relative;z-index:1">strong</span>
+    <div style="position:absolute;z-index:2;left:${leftPx}px;right:${rightPx}px;height:3px;background:#E53935;border-radius:2px;top:${topPct}%"></div>
+  </div>`;
 }
 
-/* Q7 — SVG letter 'g' with different descender loop shapes */
+/* Q7, SVG letter 'g' with different descender loop shapes */
 /* Bowl: M36 20 A13 13 0 1 0 36 22 = almost full CCW circle (large-arc, sweep=0) */
 const gWide = `<svg viewBox="0 0 52 82" width="38" height="60" xmlns="http://www.w3.org/2000/svg">
   <!-- Bowl -->
@@ -575,29 +571,8 @@ const gNoLoop = `<svg viewBox="0 0 52 82" width="38" height="60" xmlns="http://w
     fill="none" stroke="#1F1F1F" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>`;
 
-/* Q8 — SVG letter 'm' with rounded / pointed / connected style */
-const shapeRound = `<svg viewBox="0 0 62 46" width="62" height="46" xmlns="http://www.w3.org/2000/svg">
-  <path d="M6 40 L6 22 Q6 8 15 8 Q24 8 24 22 Q24 8 33 8 Q42 8 42 22 L42 40"
-    fill="none" stroke="#1F1F1F" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
-</svg>`;
 
-const shapePoint = `<svg viewBox="0 0 62 46" width="62" height="46" xmlns="http://www.w3.org/2000/svg">
-  <path d="M6 40 L6 24 L15 5 L24 24 L33 5 L42 24 L42 40"
-    fill="none" stroke="#1F1F1F" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
-</svg>`;
-
-const shapeConnect = `<svg viewBox="0 0 72 46" width="72" height="46" xmlns="http://www.w3.org/2000/svg">
-  <!-- entry stroke -->
-  <path d="M2 30 Q4 24 6 22" fill="none" stroke="#1F1F1F" stroke-width="2.2" stroke-linecap="round"/>
-  <!-- 'm' -->
-  <path d="M6 40 L6 22 Q6 8 15 8 Q24 8 24 22 Q24 8 33 8 Q42 8 42 22 L42 38"
-    fill="none" stroke="#1F1F1F" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
-  <!-- exit / connecting stroke to next letter -->
-  <path d="M42 38 Q46 44 50 36 L54 22 Q54 10 60 10 Q66 10 66 22 L66 40"
-    fill="none" stroke="#1F1F1F" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
-</svg>`;
-
-/* Q9 — SVG open vs closed 'o' — based on handwritten reference */
+/* Q9, SVG open vs closed 'o', based on handwritten reference */
 const oOpen = `<svg viewBox="0 0 52 52" width="46" height="46" xmlns="http://www.w3.org/2000/svg">
   <!-- Circle with a clear gap at the top (11 o'clock to 1 o'clock) -->
   <path d="M33 12 A16 16 0 1 1 19 12"
@@ -605,7 +580,7 @@ const oOpen = `<svg viewBox="0 0 52 52" width="46" height="46" xmlns="http://www
 </svg>`;
 
 const oClosed = `<svg viewBox="0 0 52 52" width="46" height="46" xmlns="http://www.w3.org/2000/svg">
-  <!-- Fully closed oval — no gap anywhere -->
+  <!-- Fully closed oval, no gap anywhere -->
   <ellipse cx="26" cy="26" rx="16" ry="16" fill="none" stroke="#1F1F1F" stroke-width="2.8"/>
 </svg>`;
 
@@ -622,14 +597,14 @@ let score    = { social:0, emotion:0, drive:0, outlook:0, order:0 };
 ────────────────────────────────────── */
 const questions = [
 
-  /* Q1 — Letter Size (lined paper background) */
+  /* Q1, Letter Size (lined paper background) */
   {
     title: "How large are your letters?",
     hint:  "Compare the height of your letters to the ruled lines on the page.",
     opts: [
       {
         label: "Large",
-        desc:  "Letters are tall — they reach or overflow the top of the line",
+        desc:  "Letters are tall, they reach or overflow the top of the line",
         vis:   linedBox(`<span style="font-family:'Caveat',cursive;font-size:2.4rem;font-weight:700;line-height:1;color:#1F1F1F">Aa</span>`),
         score: { social:2, drive:1 }
       },
@@ -641,32 +616,32 @@ const questions = [
       },
       {
         label: "Small or Tiny",
-        desc:  "Letters are noticeably compact — they barely fill the line",
+        desc:  "Letters are noticeably compact, they barely fill the line",
         vis:   linedBox(`<span style="font-family:'Caveat',cursive;font-size:0.8rem;font-weight:600;line-height:1;color:#1F1F1F">Aa</span>`),
         score: { social:-2, order:1 }
       }
     ]
   },
 
-  /* Q2 — Slant (stronger angles) */
+  /* Q2, Slant (stronger angles) */
   {
     title: "Which way do your letters slant?",
-    hint:  "Imagine a vertical line through your letters — do they lean forward, backward, or stand perfectly straight?",
+    hint:  "Imagine a vertical line through your letters, do they lean forward, backward, or stand perfectly straight?",
     opts: [
       {
-        label: "Forward — leans right",
+        label: "Forward, leans right",
         desc:  "Letters angle noticeably to the right",
         vis:   `<span style="font-family:'Caveat',cursive;font-size:1.5rem;display:inline-block;transform:skewX(-22deg);color:#1F1F1F">Hello</span>`,
         score: { social:1, emotion:2 }
       },
       {
-        label: "Upright — perfectly vertical",
-        desc:  "Letters stand straight up — no lean in either direction",
+        label: "Upright, perfectly vertical",
+        desc:  "Letters stand straight up, no lean in either direction",
         vis:   `<span style="font-family:'Caveat',cursive;font-size:1.5rem;font-style:normal;display:inline-block;transform:none;color:#1F1F1F;letter-spacing:0.05em">Hello</span>`,
         score: { emotion:-1, order:1 }
       },
       {
-        label: "Backward — leans left",
+        label: "Backward, leans left",
         desc:  "Letters angle clearly to the left",
         vis:   `<span style="font-family:'Caveat',cursive;font-size:1.5rem;display:inline-block;transform:skewX(42deg);color:#1F1F1F">Hello</span>`,
         score: { social:-1, emotion:-2 }
@@ -674,33 +649,33 @@ const questions = [
     ]
   },
 
-  /* Q3 — Pressure */
+  /* Q3, Pressure */
   {
     title: "How hard do you press the pen?",
-    hint:  "Flip your paper over — how deep are the grooves from your writing?",
+    hint:  "Flip your paper over, how deep are the grooves from your writing?",
     opts: [
       {
-        label: "Heavy — deep grooves",
-        desc:  "You press firmly — a clear impression is visible on the other side",
+        label: "Heavy, deep grooves",
+        desc:  "You press firmly, a clear impression is visible on the other side",
         vis:   `<span style="font-family:'Caveat',cursive;font-size:1.6rem;font-weight:700;color:#111;text-shadow:0 1px 1px #444">Aa</span>`,
         score: { drive:2, emotion:1 }
       },
       {
-        label: "Medium — moderate impression",
+        label: "Medium, moderate impression",
         desc:  "Consistent, balanced pressure throughout",
         vis:   `<span style="font-family:'Caveat',cursive;font-size:1.6rem;font-weight:500;color:#555">Aa</span>`,
         score: {}
       },
       {
-        label: "Light — barely any impression",
-        desc:  "Very faint marks — almost no groove on the other side",
+        label: "Light, barely any impression",
+        desc:  "Very faint marks, almost no groove on the other side",
         vis:   `<span style="font-family:'Caveat',cursive;font-size:1.6rem;font-weight:400;color:#c0b8b0">Aa</span>`,
         score: { emotion:2, drive:-1 }
       }
     ]
   },
 
-  /* Q4 — Word Spacing */
+  /* Q4, Word Spacing */
   {
     title: "How much space is between your words?",
     hint:  "Look at the gaps between each word in your affirmation.",
@@ -713,7 +688,7 @@ const questions = [
       },
       {
         label: "Normal spacing",
-        desc:  "Natural, even gaps — nothing unusual",
+        desc:  "Natural, even gaps, nothing unusual",
         vis:   `<span style="font-family:'Caveat',cursive;font-size:0.9rem;color:#1F1F1F">I am</span>`,
         score: {}
       },
@@ -726,19 +701,19 @@ const questions = [
     ]
   },
 
-  /* Q5 — i-Dot */
+  /* Q5, i-Dot */
   {
     title: "How do you dot your lowercase 'i'?",
-    hint:  "Look closely at the dots above your i's — where are they placed and what do they look like?",
+    hint:  "Look closely at the dots above your i's, where are they placed and what do they look like?",
     opts: [
       {
-        label: "High — floats well above",
+        label: "High, floats well above",
         desc:  "The dot sits far above the letter stem",
         vis:   `<span style="font-family:'Caveat',cursive;font-size:1.8rem;line-height:1;display:inline-flex;align-items:flex-end;justify-content:center"><span style="position:relative">ı<span style="position:absolute;top:-14px;left:50%;transform:translateX(-50%);font-size:1rem">·</span></span></span>`,
         score: { outlook:2 }
       },
       {
-        label: "Precisely placed — right above",
+        label: "Precisely placed, right above",
         desc:  "A neat, accurate dot exactly above the stem",
         vis:   `<span style="font-family:'Caveat',cursive;font-size:1.8rem">i</span>`,
         score: { order:2 }
@@ -764,46 +739,46 @@ const questions = [
     ]
   },
 
-  /* Q6 — T-bar (word "letter" with red crossbar) */
+  /* Q6, T-bar (word "letter" with red crossbar) */
   {
     title: "How do you cross your lowercase 't'?",
-    hint:  "Look at the horizontal bar through your t's — where does it sit on the stem?",
+    hint:  "Look at the horizontal bar through your t's, where does it sit on the stem?",
     opts: [
       {
-        label: "High &amp; long — near the top",
+        label: "High &amp; long, near the top",
         desc:  "The bar sweeps wide and sits close to the top of the stem",
-        vis:   tbarVis(10, 2, 56),
+        vis:   tbarVis(19, 4, 32),
         score: { drive:2, outlook:1 }
       },
       {
-        label: "Middle — neat and centred",
+        label: "Middle, neat and centred",
         desc:  "The bar crosses right in the middle of the stem",
-        vis:   tbarVis(27, 14, 42),
+        vis:   tbarVis(36, 16, 43),
         score: { order:1 }
       },
       {
-        label: "Short &amp; low — near the bottom",
+        label: "Short &amp; low, near the bottom",
         desc:  "A small, minimal bar sitting low on the stem",
-        vis:   tbarVis(38, 19, 35),
+        vis:   tbarVis(52, 22, 54),
         score: { drive:-2 }
       }
     ]
   },
 
-  /* Q7 — Loops (letter 'g' SVG) */
+  /* Q7, Loops (letter 'g' SVG) */
   {
     title: "What does the loop of your lowercase 'g' look like?",
-    hint:  "Look at the 'g' in 'strong' — how does the tail loop below the line?",
+    hint:  "Look at the 'g' in 'strong', how does the tail loop below the line?",
     opts: [
       {
         label: "Wide &amp; open",
-        desc:  "A large, rounded loop below the line — open and spacious",
+        desc:  "A large, rounded loop below the line, open and spacious",
         vis:   gWide,
         score: { emotion:1, social:1 }
       },
       {
         label: "Narrow &amp; tight",
-        desc:  "A compressed, elongated loop — barely any space inside",
+        desc:  "A compressed, elongated loop, barely any space inside",
         vis:   gNarrow,
         score: { drive:1, emotion:-1 }
       },
@@ -816,36 +791,10 @@ const questions = [
     ]
   },
 
-  /* Q8 — Letter Shapes (SVG 'm') */
-  {
-    title: "What shape do your letters tend to be?",
-    hint:  "Look at letters like 'm' and 'n' — are the tops curved, sharp, or do the letters flow together?",
-    opts: [
-      {
-        label: "Rounded &amp; soft",
-        desc:  "The arches of your letters curve gently at the top",
-        vis:   shapeRound,
-        score: { emotion:1, outlook:1 }
-      },
-      {
-        label: "Pointed &amp; angular",
-        desc:  "The tops of your letters come to a sharp, angular peak",
-        vis:   shapePoint,
-        score: { drive:1, emotion:-1 }
-      },
-      {
-        label: "Connected — letters flow together",
-        desc:  "Letters are joined with no pen lifts — one continuous stroke",
-        vis:   shapeConnect,
-        score: { order:1, drive:1 }
-      }
-    ]
-  },
-
-  /* Q9 — Letter 'o' (SVG open vs closed) */
+  /* Q8, Letter 'o' (SVG open vs closed) */
   {
     title: "How is your letter 'o' formed?",
-    hint:  "Look closely at the o's in your affirmation — is the top open or completely sealed?",
+    hint:  "Look closely at the o's in your affirmation, is the top open or completely sealed?",
     opts: [
       {
         label: "Open at the top",
@@ -855,33 +804,33 @@ const questions = [
       },
       {
         label: "Completely sealed",
-        desc:  "The 'o' is a tight, perfectly closed circle — no gap at all",
+        desc:  "The 'o' is a tight, perfectly closed circle, no gap at all",
         vis:   oClosed,
         score: { social:-2, emotion:-1 }
       }
     ]
   },
 
-  /* Q10 — Signature */
+  /* Q10, Signature */
   {
     title: "How does your signature look?",
-    hint:  "Sign your name naturally below the affirmation — what does it look like?",
+    hint:  "Sign your name naturally below the affirmation, what does it look like?",
     opts: [
       {
         label: "Large &amp; legible",
-        desc:  "Clear, bold, and easy to read — your name is obvious",
+        desc:  "Clear, bold, and easy to read, your name is obvious",
         vis:   `<span style="font-family:'Caveat',cursive;font-size:1.35rem;font-weight:700;color:#1F1F1F">Sarah J.</span>`,
         score: { social:2, drive:1 }
       },
       {
         label: "Small &amp; modest",
-        desc:  "Smaller than your writing — understated and humble",
+        desc:  "Smaller than your writing, understated and humble",
         vis:   `<span style="font-family:'Caveat',cursive;font-size:0.85rem;font-weight:600;color:#1F1F1F">sarah j.</span>`,
         score: { social:-1, emotion:-1 }
       },
       {
         label: "Illegible scrawl",
-        desc:  "Fast, stylised swirls — difficult for others to read",
+        desc:  "Fast, stylised swirls, difficult for others to read",
         vis:   `<span style="font-family:'Caveat',cursive;font-size:1.2rem;font-style:italic;color:#555">S&#126;j~~</span>`,
         score: { social:-1, emotion:1 }
       },
@@ -902,52 +851,52 @@ const personas = {
   visionary: {
     emoji:  '🌟',
     name:   'The Visionary',
-    desc:   "Your handwriting reveals a bold, driven personality with an eye firmly fixed on the horizon. You think big, act decisively, and your natural charisma draws people effortlessly into your orbit. You were made to lead — and when you step into that role, others genuinely and gladly follow.",
+    desc:   "Your handwriting reveals a bold, driven personality with an eye firmly fixed on the horizon. You think big, act decisively, and your natural charisma draws people effortlessly into your orbit. You were made to lead, and when you step into that role, others genuinely and gladly follow.",
     traits: ['Charismatic','Ambitious','Optimistic','Action-Oriented','Inspiring'],
     s:      'Leading, energising people, and turning bold ideas into real outcomes',
-    c:      "Patience — you move fast, and your pace isn't always everyone else's",
+    c:      "Patience, you move fast, and your pace isn't always everyone else's",
     w:      'Leadership, entrepreneurship, and any role where you set the vision',
-    soc:    "The life of the room — you're energised by people and thrive on attention"
+    soc:    "The life of the room, you're energised by people and thrive on attention"
   },
   connector: {
     emoji:  '💛',
     name:   'The Empathetic Connector',
-    desc:   "Your handwriting reveals a deeply emotionally intelligent soul. You feel what others feel, you listen with your whole heart, and you build relationships that go genuinely deep. People trust you instinctively — you're the person they call when it really matters.",
+    desc:   "Your handwriting reveals a deeply emotionally intelligent soul. You feel what others feel, you listen with your whole heart, and you build relationships that go genuinely deep. People trust you instinctively, you're the person they call when it really matters.",
     traits: ['Empathetic','Warm','Perceptive','Nurturing','Loyal'],
     s:      'Deep listening, emotional insight, and building bonds that last',
-    c:      "Setting boundaries — you give so much of yourself to the people you love",
+    c:      "Setting boundaries, you give so much of yourself to the people you love",
     w:      'Counselling, teaching, healthcare, or any meaningful people-facing role',
-    soc:    "The heart of your circle — the confidant everyone turns to first"
+    soc:    "The heart of your circle, the confidant everyone turns to first"
   },
   achiever: {
     emoji:  '🎯',
     name:   'The Dependable Achiever',
-    desc:   "Your handwriting reveals a methodical, reliable, high-performing personality. You set goals and you reach them — every single time. Others count on you completely, and you never let them down. Your consistency and follow-through are genuinely rare and powerful qualities.",
+    desc:   "Your handwriting reveals a methodical, reliable, high-performing personality. You set goals and you reach them, every single time. Others count on you completely, and you never let them down. Your consistency and follow-through are genuinely rare and powerful qualities.",
     traits: ['Reliable','Disciplined','Goal-Oriented','Practical','Consistent'],
     s:      'Follow-through, organisation, and delivering results under pressure',
-    c:      "Flexibility — unexpected changes to the plan can feel deeply unsettling",
+    c:      "Flexibility, unexpected changes to the plan can feel deeply unsettling",
     w:      'Operations, project management, finance, or any structured, goal-driven role',
-    soc:    "Deeply trusted — the friend who always shows up, without exception"
+    soc:    "Deeply trusted, the friend who always shows up, without exception"
   },
   creativeSoul: {
     emoji:  '🎨',
     name:   'The Creative Soul',
-    desc:   "Your handwriting reveals a richly imaginative inner world. You experience life in vivid, saturated colour — ideas flow freely, beauty catches your eye everywhere, and your creative energy is genuinely impossible to contain. You bring originality and unexpected depth to everything you touch.",
+    desc:   "Your handwriting reveals a richly imaginative inner world. You experience life in vivid, saturated colour, ideas flow freely, beauty catches your eye everywhere, and your creative energy is genuinely impossible to contain. You bring originality and unexpected depth to everything you touch.",
     traits: ['Creative','Imaginative','Expressive','Intuitive','Sensitive'],
     s:      'Original thinking, artistic expression, and noticing what others walk past',
-    c:      "Finishing — you're brilliant at starting things and less fond of endings",
+    c:      "Finishing, you're brilliant at starting things and less fond of endings",
     w:      'Design, writing, art, music, or any creative outlet for self-expression',
-    soc:    "Magnetic — your perspective is always unexpected, fascinating, and fresh"
+    soc:    "Magnetic, your perspective is always unexpected, fascinating, and fresh"
   },
   strategist: {
     emoji:  '🧠',
     name:   'The Independent Strategist',
-    desc:   "Your handwriting reveals a sharp, analytical mind that works best entirely on its own terms. You are precise, deliberate, and exceptionally self-reliant. You solve complex problems with calm, logical clarity — and your high standards produce results that consistently exceed expectation.",
+    desc:   "Your handwriting reveals a sharp, analytical mind that works best entirely on its own terms. You are precise, deliberate, and exceptionally self-reliant. You solve complex problems with calm, logical clarity, and your high standards produce results that consistently exceed expectation.",
     traits: ['Analytical','Self-Reliant','Precise','Strategic','Focused'],
     s:      'Problem-solving, independent deep work, and rigorous clear thinking',
-    c:      "Delegating — it's often just faster and easier to do it yourself",
+    c:      "Delegating, it's often just faster and easier to do it yourself",
     w:      'Research, strategy, law, engineering, or any intellectually demanding role',
-    soc:    "Selective with your inner circle — you value depth and authenticity above all"
+    soc:    "Selective with your inner circle, you value depth and authenticity above all"
   },
   observer: {
     emoji:  '🌿',
@@ -955,27 +904,27 @@ const personas = {
     desc:   "Your handwriting reveals a deeply thoughtful, perceptive, and patient nature. Where others rush, you pause and notice. You consistently catch details everyone else misses, and your quiet wisdom makes you someone people genuinely seek out for measured, considered perspective.",
     traits: ['Observant','Thoughtful','Patient','Detail-Oriented','Wise'],
     s:      'Catching nuance, deep processing, and offering calm, steady presence',
-    c:      "Self-promotion — your many gifts often go quietly and unnecessarily unannounced",
+    c:      "Self-promotion, your many gifts often go quietly and unnecessarily unannounced",
     w:      'Writing, research, analysis, or any role that deeply rewards careful thinking',
-    soc:    "Small, deep connections over large social gatherings — substance over breadth"
+    soc:    "Small, deep connections over large social gatherings, substance over breadth"
   },
   freeSpirit: {
     emoji:  '🌈',
     name:   'The Free Spirit',
-    desc:   "Your handwriting reveals someone who lives vividly and joyfully in the present moment. You are spontaneous, open-minded, and refreshingly unpredictable. Your genuine enthusiasm for life is contagious — you make everything more fun and more alive just by being there.",
+    desc:   "Your handwriting reveals someone who lives vividly and joyfully in the present moment. You are spontaneous, open-minded, and refreshingly unpredictable. Your genuine enthusiasm for life is contagious, you make everything more fun and more alive just by being there.",
     traits: ['Spontaneous','Open-Minded','Expressive','Adventurous','Fun-Loving'],
     s:      'Adaptability, enthusiasm, and lifting the energy of everyone around you',
-    c:      "Routine — too much structure and repetition can feel genuinely suffocating",
+    c:      "Routine, too much structure and repetition can feel genuinely suffocating",
     w:      'Roles with variety, creativity, travel, or constant human interaction',
-    soc:    "Everyone's favourite — you bring warmth and lightness wherever you go"
+    soc:    "Everyone's favourite, you bring warmth and lightness wherever you go"
   },
   perfectionist: {
     emoji:  '💎',
     name:   'The Passionate Perfectionist',
-    desc:   "Your handwriting reveals someone who simply doesn't settle. Your standards are exceptionally high, your focus is laser-sharp, and the quality of everything you do reflects both. You care deeply about getting things right — and your commitment to excellence is something others genuinely admire.",
+    desc:   "Your handwriting reveals someone who simply doesn't settle. Your standards are exceptionally high, your focus is laser-sharp, and the quality of everything you do reflects both. You care deeply about getting things right, and your commitment to excellence is something others genuinely admire.",
     traits: ['Detail-Oriented','Determined','High Standards','Focused','Intense'],
     s:      'Precision, craftsmanship, and work that truly and consistently stands out',
-    c:      "Letting go — not everything needs to be perfect, but you already know that",
+    c:      "Letting go, not everything needs to be perfect, but you already know that",
     w:      'Roles requiring mastery, fine craft, and the relentless pursuit of excellence',
     soc:    "Deeply loyal and devoted to a very small, very carefully chosen inner circle"
   }
