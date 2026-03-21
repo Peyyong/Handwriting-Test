@@ -45,7 +45,7 @@
       -webkit-font-smoothing: antialiased;
     }
 
-    h1, h2, h3, h4, h5 { font-family: var(--font-head); }
+    h1, h2, h3, h4, h5 { font-family: var(--font-head); font-weight: 400; }
     h1 { font-size: 36px; text-transform: uppercase; letter-spacing: 0.02em; }
     h2 { font-size: 32px; text-transform: uppercase; letter-spacing: 0.02em; }
     h3 { font-size: 24px; text-transform: uppercase; letter-spacing: 0.02em; }
@@ -78,7 +78,7 @@
     .popup-icon { font-size:3.25rem; text-align:center; display:block; margin-bottom:0.875rem; }
     .popup h2   {
       font-family:var(--font-head);
-      font-size:1.35rem; font-weight:900; text-align:center;
+      font-size:1.35rem; font-weight:400; text-align:center;
       line-height:1.25; margin-bottom:0.4rem;
       text-transform:uppercase; letter-spacing:0.03em;
     }
@@ -163,7 +163,7 @@
 
     #intro h1 {
       font-size:clamp(1.75rem, 5vw, 36px);
-      font-weight:900; line-height:1.1;
+      font-weight:400; line-height:1.1;
       margin-bottom:1rem;
     }
     #intro .sub {
@@ -238,7 +238,7 @@
     }
     .q-title {
       font-family:var(--font-head);
-      font-size:20px; font-weight:900;
+      font-size:20px; font-weight:400;
       margin-bottom:0.4rem; line-height:1.3;
       text-transform:uppercase;
     }
@@ -293,7 +293,7 @@
     #results { padding:2.5rem 0 5rem; display:none; animation:fadeIn 0.45s ease; }
 
     .results-hd            { text-align:center; margin-bottom:1.75rem; }
-    .results-hd h2         { font-size:clamp(1.4rem, 4vw, 32px); font-weight:900; margin-bottom:0.35rem; }
+    .results-hd h2         { font-size:clamp(1.4rem, 4vw, 32px); font-weight:400; margin-bottom:0.35rem; }
     .results-hd p          { font-size:15px; color:var(--muted); }
 
     .p-card {
@@ -318,7 +318,7 @@
     .p-name   {
       font-family:var(--font-head);
       font-size:clamp(1.7rem, 4vw, 2.6rem);
-      font-weight:900; line-height:1.05;
+      font-weight:400; line-height:1.05;
       text-transform:uppercase;
       margin-bottom:1rem;
     }
@@ -344,7 +344,7 @@
     .insight p  { font-size:15px; font-weight:600; line-height:1.5; }
 
     .cta-box  { background:var(--surface); border:1.5px solid var(--border); border-radius:var(--r-lg); padding:2rem; text-align:center; margin-bottom:1.5rem; }
-    .cta-box h3 { font-size:24px; font-weight:900; margin-bottom:0.4rem; }
+    .cta-box h3 { font-size:24px; font-weight:400; margin-bottom:0.4rem; }
     .cta-box p  { font-size:15px; color:var(--muted); margin-bottom:1.25rem; }
     .cta-btns   { display:flex; gap:0.75rem; justify-content:center; flex-wrap:wrap; }
 
@@ -422,7 +422,6 @@
       <div class="field">
         <label for="fpen">Which Pen Set Do You Have?</label>
         <input type="text" id="fpen"
-               placeholder="Enter the name printed below the barcode on the back of your box"
                required autocomplete="off">
         <p class="field-hint">Flip your pen box over — the product name is printed just below the barcode label. 📦</p>
       </div>
@@ -443,9 +442,9 @@
     <span class="popup-icon">📬</span>
     <h2>Check Your Inbox!</h2>
     <p class="popup-sub">
-      You're all set! We've sent you an email — just reply with your shipping details
-      and we'll get your free refills on their way to you. Now, let's find out what your
-      handwriting says about you!
+      You're all set! We've sent you an email requesting your shipping details so we can
+      get your free 6 pack of refills sent to you right away!<br><br>
+      Now, let's find out what your handwriting says about you!
     </p>
     <button class="btn-cta" onclick="closeEmail()">Let's Go — Start the Quiz →</button>
   </div>
@@ -545,28 +544,35 @@ function linedBox(inner) {
   return `<div style="position:relative;width:88px;height:50px;background:#fff;background-image:repeating-linear-gradient(transparent,transparent 15px,#e4dbd3 15px,#e4dbd3 16.5px);border-radius:6px;display:flex;align-items:center;justify-content:center;overflow:hidden">${inner}</div>`;
 }
 
-/* Q6 — word "letter" in Caveat with a red crossbar at a given top% */
-function tbarVis(topPct) {
-  return `<div style="position:relative;width:88px;height:50px;background:#fff;background-image:repeating-linear-gradient(transparent,transparent 15px,#e4dbd3 15px,#e4dbd3 16.5px);border-radius:6px;display:flex;align-items:center;justify-content:center;overflow:hidden">
-    <span style="font-family:'Caveat',cursive;font-size:1.45rem;color:#1F1F1F;position:relative;z-index:1;white-space:nowrap">letter</span>
-    <div style="position:absolute;z-index:2;left:27%;right:34%;height:2.5px;background:#E53935;border-radius:2px;top:${topPct}%"></div>
-  </div>`;
+/* Q6 — word "strong" in Caveat SVG with a red crossbar at different heights/widths */
+function tbarVis(barY, barX1, barX2) {
+  return `<svg viewBox="0 0 130 56" width="100%" height="50" xmlns="http://www.w3.org/2000/svg" style="display:block;max-width:108px">
+    <line x1="0" y1="18" x2="130" y2="18" stroke="#e4dbd3" stroke-width="1.5"/>
+    <line x1="0" y1="36" x2="130" y2="36" stroke="#e4dbd3" stroke-width="1.5"/>
+    <line x1="0" y1="54" x2="130" y2="54" stroke="#e4dbd3" stroke-width="1.5"/>
+    <text x="5" y="44" font-family="Caveat, cursive" font-size="32" fill="#1F1F1F">strong</text>
+    <line x1="${barX1}" y1="${barY}" x2="${barX2}" y2="${barY}" stroke="#E53935" stroke-width="3" stroke-linecap="round"/>
+  </svg>`;
 }
 
-/* Q7 — SVG letter 'l' with different loop shapes */
-const loopWide = `<svg viewBox="0 0 48 68" width="36" height="54" xmlns="http://www.w3.org/2000/svg">
-  <path d="M24 62 C23 50 13 42 13 28 C13 14 20 7 27 7 C34 7 37 13 35 22 C33 30 26 34 23 40 C21 46 22 54 24 62"
+/* Q7 — SVG letter 'g' with different descender loop shapes */
+/* Bowl: M36 20 A13 13 0 1 0 36 22 = almost full CCW circle (large-arc, sweep=0) */
+const gWide = `<svg viewBox="0 0 52 82" width="38" height="60" xmlns="http://www.w3.org/2000/svg">
+  <!-- Bowl -->
+  <path d="M36 20 A13 13 0 1 0 36 22 L36 50 C36 72 10 74 9 57 C8 42 20 40 30 42"
     fill="none" stroke="#1F1F1F" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>`;
 
-const loopNarrow = `<svg viewBox="0 0 48 68" width="36" height="54" xmlns="http://www.w3.org/2000/svg">
-  <path d="M24 62 C23 52 20 44 20 32 C20 18 22 8 26 8 C29 8 30 14 29 26 C28 36 25 44 24 54 C24 58 24 62 24 62"
-    fill="none" stroke="#1F1F1F" stroke-width="2.4" stroke-linecap="round"/>
+const gNarrow = `<svg viewBox="0 0 52 82" width="38" height="60" xmlns="http://www.w3.org/2000/svg">
+  <!-- Bowl (slightly smaller) -->
+  <path d="M34 22 A11 11 0 1 0 34 24 L34 50 C34 66 20 66 19 55 C18 44 26 42 32 44"
+    fill="none" stroke="#1F1F1F" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>`;
 
-const loopNone = `<svg viewBox="0 0 48 68" width="36" height="54" xmlns="http://www.w3.org/2000/svg">
-  <line x1="24" y1="6" x2="24" y2="62" stroke="#1F1F1F" stroke-width="2.4" stroke-linecap="round"/>
-  <path d="M18 62 Q24 66 30 62" fill="none" stroke="#1F1F1F" stroke-width="1.8" stroke-linecap="round"/>
+const gNoLoop = `<svg viewBox="0 0 52 82" width="38" height="60" xmlns="http://www.w3.org/2000/svg">
+  <!-- Bowl then a simple hook with no closed loop -->
+  <path d="M34 22 A12 12 0 1 0 34 24 L34 56 Q33 72 20 74 Q10 74 12 64"
+    fill="none" stroke="#1F1F1F" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>`;
 
 /* Q8 — SVG letter 'm' with rounded / pointed / connected style */
@@ -591,18 +597,16 @@ const shapeConnect = `<svg viewBox="0 0 72 46" width="72" height="46" xmlns="htt
     fill="none" stroke="#1F1F1F" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>`;
 
-/* Q9 — SVG open vs closed 'o' */
+/* Q9 — SVG open vs closed 'o' — based on handwritten reference */
 const oOpen = `<svg viewBox="0 0 52 52" width="46" height="46" xmlns="http://www.w3.org/2000/svg">
-  <!-- Arc leaving a clear gap at the top -->
-  <path d="M37 14 A17 17 0 1 0 15 14"
-    fill="none" stroke="#1F1F1F" stroke-width="2.6" stroke-linecap="round"/>
-  <!-- Small red arrows showing the gap -->
-  <path d="M15 10 L15 14" stroke="#E53935" stroke-width="2" stroke-linecap="round"/>
-  <path d="M37 10 L37 14" stroke="#E53935" stroke-width="2" stroke-linecap="round"/>
+  <!-- Circle with a clear gap at the top (11 o'clock to 1 o'clock) -->
+  <path d="M33 12 A16 16 0 1 1 19 12"
+    fill="none" stroke="#1F1F1F" stroke-width="2.8" stroke-linecap="round"/>
 </svg>`;
 
 const oClosed = `<svg viewBox="0 0 52 52" width="46" height="46" xmlns="http://www.w3.org/2000/svg">
-  <ellipse cx="26" cy="26" rx="17" ry="18" fill="none" stroke="#1F1F1F" stroke-width="2.6"/>
+  <!-- Fully closed oval — no gap anywhere -->
+  <ellipse cx="26" cy="26" rx="16" ry="16" fill="none" stroke="#1F1F1F" stroke-width="2.8"/>
 </svg>`;
 
 /* ──────────────────────────────────────
@@ -664,7 +668,7 @@ const questions = [
       {
         label: "Backward — leans left",
         desc:  "Letters angle clearly to the left",
-        vis:   `<span style="font-family:'Caveat',cursive;font-size:1.5rem;display:inline-block;transform:skewX(25deg);color:#1F1F1F">Hello</span>`,
+        vis:   `<span style="font-family:'Caveat',cursive;font-size:1.5rem;display:inline-block;transform:skewX(42deg);color:#1F1F1F">Hello</span>`,
         score: { social:-1, emotion:-2 }
       }
     ]
@@ -768,45 +772,45 @@ const questions = [
       {
         label: "High &amp; long — near the top",
         desc:  "The bar sweeps wide and sits close to the top of the stem",
-        vis:   tbarVis(22),
+        vis:   tbarVis(10, 2, 56),
         score: { drive:2, outlook:1 }
       },
       {
         label: "Middle — neat and centred",
         desc:  "The bar crosses right in the middle of the stem",
-        vis:   tbarVis(44),
+        vis:   tbarVis(27, 14, 42),
         score: { order:1 }
       },
       {
         label: "Short &amp; low — near the bottom",
         desc:  "A small, minimal bar sitting low on the stem",
-        vis:   tbarVis(64),
+        vis:   tbarVis(38, 19, 35),
         score: { drive:-2 }
       }
     ]
   },
 
-  /* Q7 — Loops (letter 'l' SVG) */
+  /* Q7 — Loops (letter 'g' SVG) */
   {
-    title: "What does the loop of your letter 'l' look like?",
-    hint:  "Look at your letter 'l' in the affirmation — how is the loop at the top shaped?",
+    title: "What does the loop of your lowercase 'g' look like?",
+    hint:  "Look at the 'g' in 'strong' — how does the tail loop below the line?",
     opts: [
       {
         label: "Wide &amp; open",
-        desc:  "A large, generous, rounded loop at the top",
-        vis:   loopWide,
+        desc:  "A large, rounded loop below the line — open and spacious",
+        vis:   gWide,
         score: { emotion:1, social:1 }
       },
       {
         label: "Narrow &amp; tight",
-        desc:  "A small, compressed loop — barely any space inside",
-        vis:   loopNarrow,
+        desc:  "A compressed, elongated loop — barely any space inside",
+        vis:   gNarrow,
         score: { drive:1, emotion:-1 }
       },
       {
-        label: "No loop — straight line",
-        desc:  "No loop at all — just a clean straight stroke downward",
-        vis:   loopNone,
+        label: "No loop",
+        desc:  "The tail hooks or curves down but doesn't close into a loop",
+        vis:   gNoLoop,
         score: { order:1, emotion:-1 }
       }
     ]
