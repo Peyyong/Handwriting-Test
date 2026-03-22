@@ -7,6 +7,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Nunito:wght@400;600;700;800;900&family=Caveat:wght@400;600;700&display=swap" rel="stylesheet">
+  <!-- Klaviyo -->
+  <script async type="text/javascript" src="https://static.klaviyo.com/onsite/js/klaviyo.js?company_id=XMcgUV"></script>
 
   <style>
     /* ── VARIABLES ── */
@@ -407,6 +409,11 @@
     </p>
 
     <form id="claimForm" onsubmit="submitClaim(event)">
+      <div class="field">
+        <label for="femail">Email Address</label>
+        <input type="email" id="femail" placeholder="e.g. sarah@gmail.com" required autocomplete="email">
+      </div>
+
       <div class="field">
         <label for="fname">Your Name</label>
         <input type="text" id="fname" placeholder="e.g. Sarah Johnson" required autocomplete="name">
@@ -917,8 +924,55 @@ const personas = {
 ────────────────────────────────────── */
 function submitClaim(e) {
   e.preventDefault();
-  const raw = document.getElementById('fname').value.trim();
+  const email   = document.getElementById('femail').value.trim();
+  const raw     = document.getElementById('fname').value.trim();
+  const dob     = document.getElementById('fdob').value;
+  const pen     = document.getElementById('fpen').value.trim();
   userName = raw.split(' ')[0];
+
+  /* Send to Klaviyo */
+  try {
+    var _learnq = window._learnq || [];
+    _learnq.push(['identify', {
+      '$email':      email,
+      '$first_name': userName,
+      '$last_name':  raw.split(' ').slice(1).join(' '),
+      'Date of Birth': dob,
+      'Pen Set':     pen
+    }]);
+    _learnq.push(['track', 'Handwriting Quiz Signup', {
+      'Pen Set': pen,
+      'Date of Birth': dob
+    }]);
+
+    /* Subscribe to the Handwriting Test list */
+    fetch('https://a.klaviyo.com/client/subscriptions/?company_id=XMcgUV', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'revision': '2024-10-15' },
+      body: JSON.stringify({
+        data: {
+          type: 'subscription',
+          attributes: {
+            profile: {
+              data: {
+                type: 'profile',
+                attributes: {
+                  email: email,
+                  first_name: userName,
+                  last_name: raw.split(' ').slice(1).join(' '),
+                  properties: { 'Date of Birth': dob, 'Pen Set': pen }
+                }
+              }
+            }
+          },
+          relationships: {
+            list: { data: { type: 'list', id: 'KLAVIYO_LIST_ID' } }
+          }
+        }
+      })
+    });
+  } catch(err) { /* silently continue if Klaviyo fails */ }
+
   document.getElementById('overlay1').classList.add('gone');
   document.getElementById('overlay2').classList.remove('gone');
 }
