@@ -543,37 +543,15 @@ function linedBox(inner) {
   return `<div style="position:relative;width:88px;height:50px;background:#fff;background-image:repeating-linear-gradient(transparent,transparent 15px,#e4dbd3 15px,#e4dbd3 16.5px);border-radius:6px;display:flex;align-items:center;justify-content:center;overflow:hidden">${inner}</div>`;
 }
 
-/* Q6, SVG "strong" in Caveat font with red line crossing the 't' at barY height.
-   barX1/barX2 are SVG coords. 't' starts at ~x=22, ends ~x=40, centre x=31.
-   Viewbox 0 0 112 56, baseline y=44, font-size 32. */
-function tbarVis(barY, barX1, barX2) {
-  return `<svg viewBox="0 0 112 56" width="100%" height="52" xmlns="http://www.w3.org/2000/svg" style="display:block;background:#fff;border-radius:6px">
-    <text x="4" y="44" style="font-family:'Caveat',cursive;font-size:32px" fill="#1F1F1F">strong</text>
-    <line x1="${barX1}" y1="${barY}" x2="${barX2}" y2="${barY}" stroke="#E53935" stroke-width="3.5" stroke-linecap="round"/>
-  </svg>`;
+/* Q6, real photos from Shopify CDN */
+function tbarVis(url) {
+  return `<img src="${url}" style="width:88px;height:50px;object-fit:contain;display:block;border-radius:6px;background:#fff">`;
 }
 
-/* Q7, SVG letter 'g' — three clearly distinct descender-loop styles.
-   ViewBox 0 0 46 72. Bowl centred at (22,16) radius 11.
-   Arc: M33 16 A11 11 0 1 0 33 18 = CCW large-arc (sweep=0) almost-full circle.
-   Baseline at y=36. Loop extends below. */
-const gWide = `<svg viewBox="0 0 46 72" width="36" height="56" xmlns="http://www.w3.org/2000/svg">
-  <path d="M33 16 A11 11 0 1 0 33 18 L33 36
-           C33 54 22 66 12 58 C4 50 8 38 22 36"
-    fill="none" stroke="#1F1F1F" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
-</svg>`;
-
-const gNarrow = `<svg viewBox="0 0 46 72" width="36" height="56" xmlns="http://www.w3.org/2000/svg">
-  <path d="M31 18 A10 10 0 1 0 31 20 L31 38
-           C31 52 24 60 20 54 C16 48 18 40 26 38"
-    fill="none" stroke="#1F1F1F" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
-</svg>`;
-
-const gNoLoop = `<svg viewBox="0 0 46 72" width="36" height="56" xmlns="http://www.w3.org/2000/svg">
-  <path d="M32 18 A11 11 0 1 0 32 20 L32 44
-           Q28 62 18 66 Q10 66 12 60"
-    fill="none" stroke="#1F1F1F" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
-</svg>`;
+/* Q7, real photos from Shopify CDN */
+const gWide   = `<img src="https://cdn.shopify.com/s/files/1/0940/7755/0914/files/G_-_Wide_Open.png?v=1774187372"   style="width:88px;height:50px;object-fit:contain;display:block;border-radius:6px;background:#fff">`;
+const gNarrow = `<img src="https://cdn.shopify.com/s/files/1/0940/7755/0914/files/G_-_Narrow_Tight.png?v=1774187372" style="width:88px;height:50px;object-fit:contain;display:block;border-radius:6px;background:#fff">`;
+const gNoLoop = `<img src="https://cdn.shopify.com/s/files/1/0940/7755/0914/files/G_-_No_Loop.png?v=1774187372"    style="width:88px;height:50px;object-fit:contain;display:block;border-radius:6px;background:#fff">`;
 
 
 /* Q9, SVG open vs closed 'o', based on handwritten reference */
@@ -751,19 +729,19 @@ const questions = [
       {
         label: "High &amp; long, near the top",
         desc:  "The bar sweeps wide and sits close to the top of the stem",
-        vis:   tbarVis(14, 2, 82),
+        vis:   tbarVis('https://cdn.shopify.com/s/files/1/0940/7755/0914/files/T_-_high_Long.png?v=1774187372'),
         score: { drive:2, outlook:1 }
       },
       {
         label: "Middle, neat and centred",
         desc:  "The bar crosses right in the middle of the stem",
-        vis:   tbarVis(28, 16, 54),
+        vis:   tbarVis('https://cdn.shopify.com/s/files/1/0940/7755/0914/files/T_-_Middle_Neat.png?v=1774187372'),
         score: { order:1 }
       },
       {
         label: "Short &amp; low, near the bottom",
         desc:  "A small, minimal bar sitting low on the stem",
-        vis:   tbarVis(40, 22, 44),
+        vis:   tbarVis('https://cdn.shopify.com/s/files/1/0940/7755/0914/files/T_-_Short_Low.png?v=1774187372'),
         score: { drive:-2 }
       }
     ]
